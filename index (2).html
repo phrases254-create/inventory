@@ -1,0 +1,1919 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ระบบพัสดุอุปกรณ์คอมพิวเตอร์</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+
+window.addEventListener('load', function() {
+  if (typeof jQuery === 'undefined') {
+    var s = document.createElement('script');
+    s.src = 'https://code.jquery.com/jquery-3.7.1.min.js';
+    document.head.appendChild(s);
+  }
+});
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.10.1/sweetalert2.all.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.10.1/sweetalert2.min.css">
+
+<style>:root{--primary:#1a56db;--primary-dark:#1045b0;--primary-light:#e8f0fe;--secondary:#0e9f6e;--danger:#e02424;--warning:#d97706;--info:#0891b2;--purple:#7e3af2;--bg:#f0f4f8;--sidebar-bg:#0f172a;--sidebar-text:#94a3b8;--sidebar-active:#1a56db;--card:#ffffff;--text:#1e293b;--text-muted:#64748b;--border:#e2e8f0;--shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);--shadow-md:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -1px rgba(0,0,0,.06);--radius:10px;}*{margin:0;padding:0;box-sizing:border-box;}body{font-family:'IBM Plex Sans Thai','Sarabun',sans-serif;background:var(--bg);color:var(--text);font-size:14px;}#loginScreen{min-height:100vh;background:linear-gradient(160deg,#065535 0%,#0a7a4b 40%,#F68702 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}#loginScreen::before{content:'';position:absolute;width:500px;height:500px;background:rgba(255,255,255,.04);border-radius:50%;top:-120px;right:-120px;}#loginScreen::after{content:'';position:absolute;width:350px;height:350px;background:rgba(246,135,2,.12);border-radius:50%;bottom:-80px;left:-80px;}.login-card{background:rgba(255,255,255,.95);border:1px solid rgba(255,255,255,.8);border-radius:24px;padding:48px 44px;width:400px;box-shadow:0 30px 60px rgba(0,0,0,.25);position:relative;z-index:1;}.login-logo{text-align:center;margin-bottom:32px;}.login-logo .icon-wrap{width:80px;height:80px;background:linear-gradient(135deg,#F68702,#e07600);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 8px 24px rgba(246,135,2,.4);}.login-logo h1{color:#065535;font-size:20px;font-weight:700;}.login-logo p{color:#64748b;font-size:13px;margin-top:4px;}.login-card label{color:#374151;font-size:13px;font-weight:600;display:block;margin-bottom:6px;}.login-card input{width:100%;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px 14px;color:#1e293b;font-size:14px;font-family:inherit;margin-bottom:16px;transition:border .2s,box-shadow .2s;}.login-card input:focus{outline:none;border-color:#F68702;box-shadow:0 0 0 3px rgba(246,135,2,.12);}.btn-login{width:100%;background:linear-gradient(135deg,#F68702,#e07600);color:#fff;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;transition:opacity .2s,transform .1s;margin-top:4px;box-shadow:0 4px 14px rgba(246,135,2,.4);}.btn-login:hover{opacity:.92;transform:translateY(-1px);}#app{display:none;}.layout{display:flex;min-height:100vh;}.sidebar{width:240px;min-height:100vh;background:var(--sidebar-bg);display:flex;flex-direction:column;position:fixed;top:0;left:0;z-index:100;transition:width .25s;}.sidebar-header{padding:20px 16px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:12px;}.sidebar-icon-wrap{width:38px;height:38px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}.sidebar-title{color:#fff;font-weight:700;font-size:14px;line-height:1.3;}.sidebar-title span{color:rgba(255,255,255,.4);font-size:11px;font-weight:400;display:block;}.sidebar-nav{flex:1;padding:12px 8px;overflow-y:auto;}.nav-section-label{color:rgba(255,255,255,.25);font-size:10px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;padding:12px 8px 4px;}.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;color:var(--sidebar-text);transition:all .15s;margin-bottom:2px;text-decoration:none;}.nav-item:hover{background:rgba(255,255,255,.08);color:#fff;}.nav-item.active{background:rgba(246,135,2,.2);color:#fff;border-left:3px solid #F68702;}.nav-item.active .nav-icon{color:var(--primary);}.nav-icon{width:18px;text-align:center;font-size:14px;}.nav-label{font-size:13px;}.nav-badge{margin-left:auto;background:var(--danger);color:#fff;font-size:10px;padding:1px 6px;border-radius:10px;font-weight:700;}.sidebar-footer{padding:12px 8px;border-top:1px solid rgba(255,255,255,.06);}.user-card{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,.05);}.user-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}.user-info .user-name{color:#fff;font-size:13px;font-weight:600;}.user-info .user-role{font-size:11px;color:rgba(255,255,255,.4);}.btn-logout{margin-left:auto;background:none;border:none;color:rgba(255,255,255,.3);cursor:pointer;font-size:14px;transition:color .2s;}.btn-logout:hover{color:var(--danger);}.main{margin-left:240px;flex:1;display:flex;flex-direction:column;min-height:100vh;}.topbar{background:var(--card);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;box-shadow:var(--shadow);}.page-title{font-size:18px;font-weight:700;color:var(--text);}.page-subtitle{font-size:12px;color:var(--text-muted);margin-top:2px;}.topbar-actions{display:flex;align-items:center;gap:10px;}.content{padding:24px;flex:1;}.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);}.card-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}.card-title{font-size:15px;font-weight:700;}.card-body{padding:20px;}.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;}.stat-card{background:var(--card);border-radius:var(--radius);padding:20px;border:1px solid var(--border);box-shadow:var(--shadow);display:flex;align-items:center;gap:16px;transition:transform .15s,box-shadow .15s;}.stat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);}.stat-icon{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}.stat-value{font-size:28px;font-weight:800;line-height:1;}.stat-label{font-size:12px;color:var(--text-muted);margin-top:4px;}.stat-trend{font-size:11px;margin-top:6px;}.stat-trend.up{color:var(--secondary);}.stat-trend.down{color:var(--danger);}.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;font-family:inherit;border:none;cursor:pointer;transition:all .15s;text-decoration:none;}.btn:hover{opacity:.88;transform:translateY(-1px);}.btn-sm{padding:5px 12px;font-size:12px;}.btn-primary{background:var(--primary);color:#fff;}.btn-success{background:var(--secondary);color:#fff;}.btn-danger{background:var(--danger);color:#fff;}.btn-warning{background:var(--warning);color:#fff;}.btn-info{background:var(--info);color:#fff;}.btn-purple{background:var(--purple);color:#fff;}.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text);}.btn-outline:hover{background:var(--bg);}.table-wrap{overflow-x:auto;}table{width:100%;border-collapse:collapse;}thead th{background:var(--bg);padding:10px 14px;text-align:left;font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--border);white-space:nowrap;}tbody td{padding:12px 14px;border-bottom:1px solid var(--border);font-size:13px;}tbody tr:last-child td{border-bottom:none;}tbody tr:hover{background:rgba(26,86,219,.03);}.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;}.badge-green{background:#d1fae5;color:#065f46;}.badge-red{background:#fee2e2;color:#991b1b;}.badge-yellow{background:#fef3c7;color:#92400e;}.badge-blue{background:#dbeafe;color:#1e40af;}.badge-gray{background:#f1f5f9;color:#475569;}.badge-purple{background:#ede9fe;color:#5b21b6;}.badge-orange{background:#ffedd5;color:#9a3412;}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}.form-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}.form-group{display:flex;flex-direction:column;gap:6px;}.form-group.full{grid-column:1 / -1;}label.form-label{font-size:13px;font-weight:600;color:var(--text);}.form-control{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;color:var(--text);background:#fff;transition:border .15s;}.form-control:focus{outline:none;border-color:var(--primary);}select.form-control{cursor:pointer;}textarea.form-control{resize:vertical;min-height:80px;}.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;}.modal-overlay.open{opacity:1;pointer-events:all;}.modal{background:#fff;border-radius:16px;width:90%;max-width:680px;max-height:90vh;overflow-y:auto;transform:scale(.96) translateY(8px);transition:transform .2s;box-shadow:0 25px 50px rgba(0,0,0,.2);}.modal-overlay.open .modal{transform:scale(1) translateY(0);}.modal-header{padding:20px 24px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:0;background:#fff;z-index:1;}.modal-header h3{font-size:17px;font-weight:700;}.modal-body{padding:24px;}.modal-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;}.btn-close-modal{background:none;border:none;cursor:pointer;font-size:20px;color:var(--text-muted);line-height:1;}#loadingOverlay{position:fixed;inset:0;background:rgba(15,23,42,.6);backdrop-filter:blur(6px);z-index:9999;display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;}#loadingOverlay.show{display:flex;}.spinner{width:50px;height:50px;border:4px solid rgba(255,255,255,.15);border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite;}@keyframes spin{to{transform:rotate(360deg);}}.loading-text{color:#fff;font-size:15px;font-weight:500;}.search-bar{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;flex:1;max-width:320px;}.search-bar input{border:none;background:none;font-family:inherit;font-size:13px;color:var(--text);flex:1;}.search-bar input:focus{outline:none;}.search-bar i{color:var(--text-muted);}.section{display:none;}.section.active{display:block;}.tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:20px;}.tab{padding:10px 20px;cursor:pointer;font-size:13px;font-weight:600;color:var(--text-muted);border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;}.tab:hover{color:var(--primary);}.tab.active{color:var(--primary);border-bottom-color:var(--primary);}.progress-wrap{background:var(--bg);border-radius:4px;height:6px;overflow:hidden;}.progress-bar{height:100%;border-radius:4px;transition:width .5s;}.chart-placeholder{height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-muted);background:var(--bg);border-radius:8px;gap:8px;}.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;}.alert-banner{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-radius:10px;margin-bottom:12px;}.alert-warning{background:#fef3c7;border:1px solid #fcd34d;}.alert-danger{background:#fee2e2;border:1px solid #fca5a5;}.alert-info{background:#dbeafe;border:1px solid #93c5fd;}.av-blue{background:var(--primary);}.av-green{background:var(--secondary);}.av-red{background:var(--danger);}.av-purple{background:var(--purple);}.av-orange{background:var(--warning);}.timeline{position:relative;padding-left:28px;}.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--border);}.timeline-item{position:relative;margin-bottom:18px;}.timeline-dot{position:absolute;left:-24px;top:2px;width:14px;height:14px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 2px var(--border);}.timeline-content{font-size:13px;}.timeline-title{font-weight:600;}.timeline-time{font-size:11px;color:var(--text-muted);margin-top:2px;}.config-item{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border);}.config-item:last-child{border-bottom:none;}.config-label{font-size:14px;font-weight:600;}.config-desc{font-size:12px;color:var(--text-muted);margin-top:2px;}.toggle{width:44px;height:24px;background:var(--border);border-radius:12px;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0;}.toggle.on{background:var(--primary);}.toggle::after{content:'';position:absolute;width:18px;height:18px;background:#fff;border-radius:50%;top:3px;left:3px;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}.toggle.on::after{left:23px;}@media (max-width:900px){.stats-grid{grid-template-columns:repeat(2,1fr);}.grid-2,.grid-3{grid-template-columns:1fr;}.form-grid,.form-grid-3{grid-template-columns:1fr;}}</style>
+</head>
+<body>
+
+<!-- LOADING OVERLAY -->
+<div id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-text" id="loadingText">กำลังบันทึกข้อมูล...</div>
+</div>
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="icon-wrap" id="logoWrap" style="background:transparent;box-shadow:none;width:110px;height:110px;">
+        <img src="data:image/jpeg;base64,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" alt="โรงพยาบาลเสนางคนิคม" style="width:110px;height:110px;object-fit:contain;border-radius:50%;background:#fff;padding:4px">
+      </div>
+      <h1>โรงพยาบาลเสนางคนิคม</h1>
+      <p>ระบบพัสดุอุปกรณ์คอมพิวเตอร์</p>
+    </div>
+    <div>
+      <label>ชื่อผู้ใช้</label>
+      <input type="text" id="loginUser" placeholder="username">
+      <label>รหัสผ่าน</label>
+      <input type="password" id="loginPass" placeholder="••••••••" id="loginPassInput">
+      <button class="btn-login" id="btnLogin"><i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app">
+  <div class="layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-icon-wrap"><i class="fas fa-server" style="color:#fff;font-size:16px"></i></div>
+        <div class="sidebar-title">IT Inventory<span>ระบบพัสดุคอมพิวเตอร์</span></div>
+      </div>
+      <nav class="sidebar-nav" id="sidebarNav"></nav>
+      <div class="sidebar-footer">
+        <div class="user-card" style="cursor:pointer" id="sidebarUserCard" title="แก้ไขโปรไฟล์">
+          <div class="user-avatar av-blue" id="sidebarAvatar">A</div>
+          <div class="user-info">
+            <div class="user-name" id="sidebarName">Admin</div>
+            <div class="user-role" id="sidebarRole">ผู้ดูแลระบบ</div>
+          </div>
+          <button class="btn-logout" id="btnLogout" title="ออกจากระบบ"><i class="fas fa-sign-out-alt"></i></button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+      <div class="topbar">
+        <div>
+          <div class="page-title" id="pageTitle">Dashboard</div>
+          <div class="page-subtitle" id="pageSubtitle">ภาพรวมระบบ</div>
+        </div>
+        <div class="topbar-actions">
+          <div id="topbarAlerts" style="display:flex;gap:8px;align-items:center"></div>
+          <button id="btnSync" title="ซิงก์ข้อมูลจาก Google Sheets" style="background:none;border:1px solid var(--border);border-radius:8px;padding:6px 12px;cursor:pointer;color:var(--text-muted);font-size:12px;display:flex;align-items:center;gap:6px;font-family:inherit;transition:all .15s" onmouseover="this.style.background='var(--primary-light)';this.style.color='var(--primary)'" onmouseout="this.style.background='none';this.style.color='var(--text-muted)'">
+            <i class="fas fa-sync-alt"></i> ซิงก์ข้อมูล
+          </button>
+          <div style="font-size:12px;color:var(--text-muted)" id="topbarDate"></div>
+        </div>
+      </div>
+      <div class="content" id="mainContent"></div>
+    </main>
+  </div>
+</div>
+
+<!-- MODAL CONTAINER -->
+<div id="modalOverlay" class="modal-overlay" onclick="closeModalOnOverlay(event)">
+  <div class="modal" id="modalBox">
+    <div class="modal-header">
+      <h3 id="modalTitle">หัวข้อ</h3>
+      <button class="btn-close-modal" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer" id="modalFooter"></div>
+  </div>
+</div>
+
+<script>
+const API_URL = 'https://script.google.com/macros/s/AKfycbxGGxQEKmaG1YHhzD-oTTQcZM4aivI9Y-MZV2qh5oIDDowwBmnljGZY59OgSzaPzaDZwQ/exec';
+
+function loadData(key, def) {
+  try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : def; } catch(e) { return def; }
+}
+function saveData(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {
+    if(e.name === 'QuotaExceededError') {
+      Swal.fire({icon:'warning',title:'พื้นที่จัดเก็บเต็ม',text:'localStorage เต็ม รูปโปรไฟล์อาจใหญ่เกินไป ลองลดขนาดรูป',confirmButtonColor:'#1a56db'});
+    }
+  }
+}
+
+function seedIfEmpty(key, def) {
+  if(localStorage.getItem(key) === null) { saveData(key, def); return JSON.parse(JSON.stringify(def)); }
+  try { return JSON.parse(localStorage.getItem(key)); } catch(e) { return JSON.parse(JSON.stringify(def)); }
+}
+
+const DEFAULT_USERS = [
+  { id: 'U001', username: 'admin', password: 'admin123', name: 'ผู้ดูแลระบบ', role: 'admin', dept: 'IT', avatar: 'av-blue', profileImg: '' },
+];
+
+let USERS = loadData('inv_users', null);
+if (!USERS || USERS.length === 0) {
+
+  USERS = JSON.parse(JSON.stringify(DEFAULT_USERS));
+  saveData('inv_users', USERS);
+} else {
+
+  USERS = USERS.map(u => ({ profileImg: '', ...u }));
+
+  if (!USERS.find(u => u.id === 'U001')) {
+    USERS.unshift(DEFAULT_USERS[0]);
+  }
+  saveData('inv_users', USERS);
+}
+
+function reloadUsers() { USERS = loadData('inv_users', DEFAULT_USERS); }
+
+let EQUIPMENT = seedIfEmpty('inv_equipment', []);
+
+let SOFTWARE = seedIfEmpty('inv_software', []);
+
+let BORROWS = seedIfEmpty('inv_borrows', []);
+
+let REPAIRS = seedIfEmpty('inv_repairs', []);
+
+let EMPLOYEES = seedIfEmpty('inv_employees', []);
+
+let CATEGORIES = seedIfEmpty('inv_categories', ['คอมพิวเตอร์','โน้ตบุ๊ก','เครื่องพิมพ์','จอภาพ','อุปกรณ์เครือข่าย','อุปกรณ์ต่อพ่วง','แท็บเล็ต','อื่นๆ']);
+let LOCATIONS  = seedIfEmpty('inv_locations',  ['ห้อง IT ชั้น 2','แผนกบัญชี','แผนก HR','แผนกการตลาด','แผนกขาย','ห้องประชุม A','ห้องประชุม B','โกดัง']);
+let DEPTS      = seedIfEmpty('inv_depts',      ['IT','บัญชี','การตลาด','HR','ขาย','ฝ่ายผลิต','จัดซื้อ','ฝ่ายบริหาร']);
+
+let currentUser = null;
+
+function _parseUser(su, localUsers) {
+
+  const allKeys = Object.keys(su);
+
+  const idKey = allKeys.find(k => k.toLowerCase() === 'id') || 'ID';
+  const userId = su[idKey] || su['ID'] || su.id || '';
+
+  const userKey = allKeys.find(k => k.toLowerCase() === 'username') || 'Username';
+  const username = su[userKey] || su['Username'] || su.username || '';
+
+  const passKey = allKeys.find(k =>
+    k.toLowerCase() === 'password' ||
+    k === 'Password' ||
+    k === 'password' ||
+    k === 'รหัสผ่าน'
+  ) || '';
+  const sheetsPass = passKey ? (String(su[passKey] || '').trim()) : '';
+
+  const local = localUsers.find(x =>
+    x.id === userId ||
+    x.username === username
+  );
+  const localPass = local ? (local.password || '') : '';
+
+  const finalPass = sheetsPass || localPass || '';
+
+  return {
+    id:         userId,
+    username:   username,
+    name:       su['ชื่อ']   || su.name   || username,
+    role:       su['Role']   || su.role   || 'user',
+    dept:       su['แผนก']   || su.dept   || '',
+    avatar:     su['Avatar'] || su.avatar || 'av-blue',
+    password:   finalPass,
+    profileImg: local ? (local.profileImg || '') : '',
+  };
+}
+
+function _mergeUsersFromSheets(sheetsUsers) {
+  const localUsers = loadData('inv_users', DEFAULT_USERS);
+  const merged = sheetsUsers.map(su => _parseUser(su, localUsers));
+
+  DEFAULT_USERS.forEach(def => {
+    const idx = merged.findIndex(x => x.id === def.id || x.username === def.username);
+    if (idx === -1) {
+      merged.unshift(def); // ไม่มีใน Sheets → เพิ่มเลย
+    } else {
+
+      if (!merged[idx].password) {
+        const localUser = localUsers.find(x => x.id === def.id);
+        merged[idx].password = (localUser && localUser.password) ? localUser.password : def.password;
+      }
+    }
+  });
+
+  USERS = merged;
+  saveData('inv_users', USERS);
+}
+
+function doLogin() {
+  const u = (document.getElementById('loginUser').value || '').trim();
+  const p = (document.getElementById('loginPass').value || '').trim();
+  if (!u || !p) {
+    Swal.fire({ icon:'warning', title:'กรุณากรอกข้อมูล', text:'กรุณากรอก Username และรหัสผ่าน', confirmButtonColor:'var(--primary)' });
+    return;
+  }
+
+  function doActualLogin(userList) {
+
+    const finalList = [...userList];
+    DEFAULT_USERS.forEach(def => {
+      if (!finalList.find(x => x.id === def.id)) finalList.unshift(def);
+    });
+
+    const found = finalList.find(x => x.username === u && x.password === p);
+    if (!found) {
+      Swal.fire({ icon:'error', title:'เข้าสู่ระบบไม่สำเร็จ', text:'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง', confirmButtonColor:'var(--primary)' });
+      return;
+    }
+    currentUser = found;
+    USERS = finalList;
+    saveData('inv_users', finalList);
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+
+    initApp();
+  }
+
+  function mergeUsersFromResponse(res) {
+    const localUsers = loadData('inv_users', DEFAULT_USERS);
+    if (!res || !res.success || !res.data || !res.data.users || !res.data.users.length) {
+      return localUsers;
+    }
+    const merged = [...localUsers];
+    res.data.users.forEach(su => {
+      const keys = Object.keys(su);
+      const get = (...ns) => {
+        for (const n of ns) {
+          const k = keys.find(k => k.toLowerCase() === n.toLowerCase());
+          if (k && su[k] !== undefined && su[k] !== null && String(su[k]).trim()) return String(su[k]).trim();
+        }
+        return '';
+      };
+      const sid   = get('id');
+      const susr  = get('username');
+      const spass = get('password', 'รหัสผ่าน');
+      if (!sid && !susr) return;
+
+      const idx = merged.findIndex(x => x.id === sid || x.username === susr);
+      if (idx >= 0) {
+        merged[idx] = {
+          ...merged[idx],
+          name:     get('ชื่อ', 'name')   || merged[idx].name,
+          role:     get('role')            || merged[idx].role,
+          dept:     get('แผนก', 'dept')   || merged[idx].dept,
+          avatar:   get('avatar')          || merged[idx].avatar || 'av-blue',
+          password: spass || merged[idx].password,
+        };
+      } else if (spass) {
+        merged.push({
+          id: sid, username: susr,
+          name:       get('ชื่อ', 'name') || susr,
+          role:       get('role')          || 'user',
+          dept:       get('แผนก', 'dept') || '',
+          avatar:     get('avatar')        || 'av-blue',
+          password:   spass,
+          profileImg: '',
+        });
+      }
+    });
+    return merged;
+  }
+
+  function syncMainDataFromResponse(res) {
+    if (!res || !res.success || !res.data) return;
+    const d = res.data;
+    if (d.equipment && d.equipment.length > 0) {
+      EQUIPMENT = d.equipment.map(r => ({
+        id: r['ID'], code: r['รหัสพัสดุ'], name: r['ชื่ออุปกรณ์'],
+        category: r['หมวดหมู่'], brand: r['ยี่ห้อ'], model: r['รุ่น'],
+        serial: r['Serial'], status: r['สถานะ'], location: r['สถานที่'],
+        holder: r['ผู้ถือครอง'], price: r['ราคา'], purchaseDate: r['วันที่ซื้อ'],
+        warrantyEnd: r['หมดประกัน'], note: r['หมายเหตุ'],
+      }));
+      saveData('inv_equipment', EQUIPMENT);
+    }
+    if (d.software && d.software.length > 0) {
+      SOFTWARE = d.software.map(r => ({
+        id: r['ID'], name: r['ชื่อซอฟต์แวร์'], version: r['Version'],
+        licenseKey: r['License Key'], type: r['ประเภท'], seats: r['Seats'],
+        usedSeats: r['ใช้งาน'], vendor: r['Vendor'], price: r['ราคา'],
+        expireDate: r['วันหมดอายุ'], note: r['หมายเหตุ'],
+      }));
+      saveData('inv_software', SOFTWARE);
+    }
+    if (d.borrows && d.borrows.length > 0) {
+      BORROWS = d.borrows.map(r => ({
+        id: r['ID'], equipmentId: r['รหัสอุปกรณ์'], equipmentName: r['ชื่ออุปกรณ์'],
+        requestByName: r['ผู้ขอ'], requestDate: r['วันที่ขอ'],
+        borrowDate: r['วันที่ยืม'], returnDate: r['กำหนดคืน'],
+        purpose: r['วัตถุประสงค์'], status: r['สถานะ'], approvedBy: r['ผู้อนุมัติ'],
+        note: r['หมายเหตุ'],
+      }));
+      saveData('inv_borrows', BORROWS);
+    }
+    if (d.repairs && d.repairs.length > 0) {
+      REPAIRS = d.repairs.map(r => ({
+        id: r['ID'], equipmentId: r['รหัสอุปกรณ์'], equipmentName: r['ชื่ออุปกรณ์'],
+        reportByName: r['ผู้แจ้ง'], reportDate: r['วันที่แจ้ง'],
+        problem: r['ปัญหา'], status: r['สถานะ'], technician: r['ช่าง'],
+        cost: r['ค่าใช้จ่าย'], note: r['หมายเหตุ'], log: [],
+      }));
+      saveData('inv_repairs', REPAIRS);
+    }
+    if (d.employees && d.employees.length > 0) {
+      EMPLOYEES = d.employees.map(r => ({
+        id: r['ID'], empCode: r['รหัสพนักงาน'], name: r['ชื่อ'],
+        dept: r['แผนก'], position: r['ตำแหน่ง'],
+        email: r['Email'], phone: r['เบอร์โทร'], userId: '',
+      }));
+      saveData('inv_employees', EMPLOYEES);
+    }
+    if (d.categories && d.categories.length > 0) { CATEGORIES = d.categories; saveData('inv_categories', CATEGORIES); }
+    if (d.locations  && d.locations.length > 0)  { LOCATIONS  = d.locations;  saveData('inv_locations',  LOCATIONS);  }
+    if (d.depts      && d.depts.length > 0)      { DEPTS      = d.depts;      saveData('inv_depts',      DEPTS);      }
+  }
+
+  // Login จาก local ก่อนเสมอ — ทำงานได้ทั้งเปิดไฟล์ HTML และผ่าน Apps Script URL
+  doActualLogin(loadData('inv_users', DEFAULT_USERS));
+
+  // sync ข้อมูลจาก Sheets ในพื้นหลัง (หลัง login สำเร็จแล้ว)
+  if (API_URL && API_URL !== 'xxx') {
+    fetch(API_URL + '?action=getData', { method: 'GET' })
+      .then(r => r.json())
+      .then(res => {
+        syncMainDataFromResponse(res);
+        const merged = mergeUsersFromResponse(res);
+        saveData('inv_users', merged);
+      })
+      .catch(() => console.warn('Sheets sync failed, using local data'));
+  }
+}
+
+function doLogout() {
+  Swal.fire({ title:'ออกจากระบบ?', icon:'question', showCancelButton:true, confirmButtonText:'ออกจากระบบ', cancelButtonText:'ยกเลิก', confirmButtonColor:'#e02424' })
+    .then(r => { if(r.isConfirmed) { currentUser = null; $('#app').hide(); $('#loginScreen').show(); $('#loginPass').val(''); } });
+}
+
+const NAV = {
+  admin: [
+    { section:'main', label:'หน้าหลัก', items:[
+      { id:'dashboard', icon:'fa-chart-pie', label:'Dashboard' },
+    ]},
+    { section:'data', label:'จัดการข้อมูล', items:[
+      { id:'equipment', icon:'fa-desktop', label:'ทะเบียนอุปกรณ์' },
+      { id:'software', icon:'fa-compact-disc', label:'ทะเบียนซอฟต์แวร์' },
+      { id:'employees', icon:'fa-users', label:'ข้อมูลพนักงาน' },
+    ]},
+    { section:'ops', label:'การดำเนินงาน', items:[
+      { id:'borrows', icon:'fa-hand-holding', label:'ยืม-คืนอุปกรณ์', badge:'borrowBadge' },
+      { id:'repairs', icon:'fa-tools', label:'แจ้งซ่อม', badge:'repairBadge' },
+    ]},
+    { section:'mgmt', label:'จัดการระบบ', items:[
+      { id:'users', icon:'fa-user-cog', label:'จัดการผู้ใช้' },
+      { id:'masterdata', icon:'fa-database', label:'ข้อมูลหลัก' },
+      { id:'reports', icon:'fa-file-alt', label:'รายงาน' },
+      { id:'settings', icon:'fa-cog', label:'ตั้งค่าระบบ' },
+    ]},
+  ],
+  staff: [
+    { section:'main', label:'หน้าหลัก', items:[
+      { id:'dashboard', icon:'fa-chart-pie', label:'Dashboard' },
+    ]},
+    { section:'data', label:'จัดการข้อมูล', items:[
+      { id:'equipment', icon:'fa-desktop', label:'ทะเบียนอุปกรณ์' },
+      { id:'software', icon:'fa-compact-disc', label:'ทะเบียนซอฟต์แวร์' },
+      { id:'employees', icon:'fa-users', label:'ข้อมูลพนักงาน' },
+    ]},
+    { section:'ops', label:'การดำเนินงาน', items:[
+      { id:'borrows', icon:'fa-hand-holding', label:'ยืม-คืนอุปกรณ์', badge:'borrowBadge' },
+      { id:'repairs', icon:'fa-tools', label:'แจ้งซ่อม', badge:'repairBadge' },
+    ]},
+    { section:'rpt', label:'รายงาน', items:[
+      { id:'reports', icon:'fa-file-alt', label:'รายงาน' },
+    ]},
+  ],
+  user: [
+    { section:'main', label:'หน้าหลัก', items:[
+      { id:'dashboard', icon:'fa-chart-pie', label:'Dashboard' },
+    ]},
+    { section:'ops', label:'บริการ', items:[
+      { id:'borrows', icon:'fa-hand-holding', label:'ยืม-คืนอุปกรณ์' },
+      { id:'repairs', icon:'fa-tools', label:'แจ้งซ่อม' },
+    ]},
+    { section:'me', label:'ของฉัน', items:[
+      { id:'myequip', icon:'fa-laptop', label:'อุปกรณ์ของฉัน' },
+    ]},
+  ]
+};
+
+let activeSection = 'dashboard';
+
+function updateSidebarUser() {
+  const u = currentUser;
+  if(!u) return;
+  if(u.profileImg) {
+    $('#sidebarAvatar').html(`<img src="${u.profileImg}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`).attr('class','user-avatar');
+  } else {
+    $('#sidebarAvatar').text(u.name.charAt(0)).attr('class','user-avatar '+u.avatar);
+  }
+  $('#sidebarName').text(u.name);
+  const roleLabel = {admin:'ผู้ดูแลระบบ',staff:'เจ้าหน้าที่',user:'ผู้ใช้งาน'};
+  $('#sidebarRole').text(roleLabel[u.role]);
+}
+
+function initApp() {
+  updateSidebarUser();
+  updateTopbarDate();
+  buildNav();
+
+  navigate('dashboard');
+}
+
+function manualSync() {
+  fetchFromSheets(() => {
+    renderSection(activeSection);
+    buildNav();
+  });
+}
+
+function fetchFromSheets(callback) {
+  if (!API_URL || API_URL === 'xxx') {
+    if (callback) callback();
+    return;
+  }
+
+  showLoading('กำลังดึงข้อมูลจาก Google Sheets...');
+
+  fetch(API_URL + '?action=getData', { method: 'GET' })
+    .then(r => r.json())
+    .then(res => {
+      hideLoading();
+      if (res.success && res.data) {
+        const d = res.data;
+
+        if (d.equipment && d.equipment.length > 0) {
+          EQUIPMENT = d.equipment.map(r => ({
+            id: r['ID'], code: r['รหัสพัสดุ'], name: r['ชื่ออุปกรณ์'],
+            category: r['หมวดหมู่'], brand: r['ยี่ห้อ'], model: r['รุ่น'],
+            serial: r['Serial'], status: r['สถานะ'], location: r['สถานที่'],
+            holder: r['ผู้ถือครอง'], price: r['ราคา'], purchaseDate: r['วันที่ซื้อ'],
+            warrantyEnd: r['หมดประกัน'], note: r['หมายเหตุ'],
+          }));
+          saveData('inv_equipment', EQUIPMENT);
+        }
+
+        if (d.software && d.software.length > 0) {
+          SOFTWARE = d.software.map(r => ({
+            id: r['ID'], name: r['ชื่อซอฟต์แวร์'], version: r['Version'],
+            licenseKey: r['License Key'], type: r['ประเภท'], seats: r['Seats'],
+            usedSeats: r['ใช้งาน'], vendor: r['Vendor'], price: r['ราคา'],
+            expireDate: r['วันหมดอายุ'], note: r['หมายเหตุ'],
+          }));
+          saveData('inv_software', SOFTWARE);
+        }
+
+        if (d.borrows && d.borrows.length > 0) {
+          BORROWS = d.borrows.map(r => ({
+            id: r['ID'], equipmentId: r['รหัสอุปกรณ์'], equipmentName: r['ชื่ออุปกรณ์'],
+            requestByName: r['ผู้ขอ'], requestDate: r['วันที่ขอ'],
+            borrowDate: r['วันที่ยืม'], returnDate: r['กำหนดคืน'],
+            purpose: r['วัตถุประสงค์'], status: r['สถานะ'], approvedBy: r['ผู้อนุมัติ'],
+            note: r['หมายเหตุ'],
+          }));
+          saveData('inv_borrows', BORROWS);
+        }
+
+        if (d.repairs && d.repairs.length > 0) {
+          REPAIRS = d.repairs.map(r => ({
+            id: r['ID'], equipmentId: r['รหัสอุปกรณ์'], equipmentName: r['ชื่ออุปกรณ์'],
+            reportByName: r['ผู้แจ้ง'], reportDate: r['วันที่แจ้ง'],
+            problem: r['ปัญหา'], status: r['สถานะ'], technician: r['ช่าง'],
+            cost: r['ค่าใช้จ่าย'], note: r['หมายเหตุ'], log: [],
+          }));
+          saveData('inv_repairs', REPAIRS);
+        }
+
+        if (d.employees && d.employees.length > 0) {
+          EMPLOYEES = d.employees.map(r => ({
+            id: r['ID'], empCode: r['รหัสพนักงาน'], name: r['ชื่อ'],
+            dept: r['แผนก'], position: r['ตำแหน่ง'],
+            email: r['Email'], phone: r['เบอร์โทร'], userId: '',
+          }));
+          saveData('inv_employees', EMPLOYEES);
+        }
+
+        if (d.categories && d.categories.length > 0) { CATEGORIES = d.categories; saveData('inv_categories', CATEGORIES); }
+        if (d.locations  && d.locations.length > 0)  { LOCATIONS  = d.locations;  saveData('inv_locations',  LOCATIONS);  }
+        if (d.depts      && d.depts.length > 0)      { DEPTS      = d.depts;      saveData('inv_depts',      DEPTS);      }
+
+        if (d.users && d.users.length > 0) {
+          _mergeUsersFromSheets(d.users);
+        }
+
+        Swal.fire({ icon:'success', title:'ซิงก์ข้อมูลสำเร็จ', text:'ข้อมูลเป็นปัจจุบันจาก Google Sheets', showConfirmButton:false, timer:1500, toast:true, position:'top-end' });
+      }
+      if (callback) callback();
+    })
+    .catch(err => {
+      hideLoading();
+      console.warn('ไม่สามารถดึงข้อมูลจาก Sheets ได้ ใช้ข้อมูลในเครื่องแทน:', err);
+      if (callback) callback();
+    });
+}
+
+function updateTopbarDate() {
+  const d = new Date();
+  const days = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
+  const months = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+  $('#topbarDate').text(`วัน${days[d.getDay()]}ที่ ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()+543}`);
+}
+
+function getBadgeCount(id) {
+  if (id === 'borrowBadge') return BORROWS.filter(b => b.status === 'pending').length;
+  if (id === 'repairBadge') return REPAIRS.filter(r => r.status === 'pending').length;
+  return 0;
+}
+
+function buildNav() {
+  const groups = NAV[currentUser.role] || NAV.user;
+  let html = '';
+  groups.forEach(g => {
+    html += `<div class="nav-section-label">${g.label}</div>`;
+    g.items.forEach(item => {
+      const cnt = item.badge ? getBadgeCount(item.badge) : 0;
+      const badgeHtml = cnt > 0 ? `<span class="nav-badge">${cnt}</span>` : '';
+      html += `<div class="nav-item" id="nav-${item.id}" onclick="navigate('${item.id}')">
+        <i class="fas ${item.icon} nav-icon"></i>
+        <span class="nav-label">${item.label}</span>${badgeHtml}
+      </div>`;
+    });
+  });
+  $('#sidebarNav').html(html);
+}
+
+function navigate(id) {
+  activeSection = id;
+  $('.nav-item').removeClass('active');
+  $(`#nav-${id}`).addClass('active');
+  const pageInfo = {
+    dashboard:  { title:'Dashboard', sub:'ภาพรวมระบบพัสดุคอมพิวเตอร์' },
+    equipment:  { title:'ทะเบียนอุปกรณ์คอมพิวเตอร์', sub:'จัดการอุปกรณ์ Hardware ทั้งหมด' },
+    software:   { title:'ทะเบียนซอฟต์แวร์', sub:'จัดการ License และซอฟต์แวร์' },
+    employees:  { title:'ข้อมูลพนักงาน', sub:'บริหารจัดการข้อมูลบุคลากร' },
+    borrows:    { title:'ระบบยืม-คืนอุปกรณ์', sub:'บริหารการยืม-คืนอุปกรณ์' },
+    repairs:    { title:'ระบบแจ้งซ่อม', sub:'ติดตามการซ่อมบำรุง' },
+    users:      { title:'จัดการผู้ใช้', sub:'บัญชีผู้ใช้งานในระบบ' },
+    masterdata: { title:'ข้อมูลหลัก', sub:'หมวดหมู่ / สถานที่ / แผนก' },
+    reports:    { title:'รายงาน', sub:'ส่งออกรายงานและสถิติ' },
+    settings:   { title:'ตั้งค่าระบบ', sub:'Configuration' },
+    myequip:    { title:'อุปกรณ์ของฉัน', sub:'อุปกรณ์ที่ครอบครองและยืม' },
+  };
+  const info = pageInfo[id] || { title: id, sub: '' };
+  $('#pageTitle').text(info.title);
+  $('#pageSubtitle').text(info.sub);
+  renderSection(id);
+}
+
+function renderSection(id) {
+  const fns = { dashboard: renderDashboard, equipment: renderEquipment, software: renderSoftware, employees: renderEmployees, borrows: renderBorrows, repairs: renderRepairs, users: renderUsers, masterdata: renderMasterData, reports: renderReports, settings: renderSettings, myequip: renderMyEquip };
+  if (fns[id]) fns[id]();
+}
+
+function renderDashboard() {
+  const activeEq = EQUIPMENT.filter(e=>e.status==='active').length;
+  const repairEq = EQUIPMENT.filter(e=>e.status==='repair').length;
+  const pendingBorrow = BORROWS.filter(b=>b.status==='pending').length;
+  const borrowing = BORROWS.filter(b=>b.status==='borrowing').length;
+  const pendingRepair = REPAIRS.filter(r=>r.status==='pending').length;
+
+  const today = new Date(); const soon = new Date(); soon.setDate(soon.getDate()+90);
+  const warrantyAlert = EQUIPMENT.filter(e => { if(!e.warrantyEnd) return false; const d = new Date(e.warrantyEnd); return d >= today && d <= soon; });
+  const swAlert = SOFTWARE.filter(s => { if(!s.expireDate) return false; const d = new Date(s.expireDate); return d >= today && d <= soon; });
+
+  let alertHtml = '';
+  if(warrantyAlert.length) alertHtml += `<div class="alert-banner alert-warning"><i class="fas fa-exclamation-triangle" style="color:#d97706;margin-top:2px"></i><div><b>อุปกรณ์ใกล้หมดประกัน ${warrantyAlert.length} รายการ</b><br><span style="font-size:12px">${warrantyAlert.map(e=>e.name+' ('+e.warrantyEnd+')').join(', ')}</span></div></div>`;
+  if(swAlert.length) alertHtml += `<div class="alert-banner alert-danger"><i class="fas fa-compact-disc" style="color:#e02424;margin-top:2px"></i><div><b>ซอฟต์แวร์ใกล้หมด License ${swAlert.length} รายการ</b><br><span style="font-size:12px">${swAlert.map(s=>s.name+' ('+s.expireDate+')').join(', ')}</span></div></div>`;
+
+  const catCount = {};
+  EQUIPMENT.forEach(e => { catCount[e.category] = (catCount[e.category]||0)+1; });
+  const catBars = Object.entries(catCount).map(([k,v]) => {
+    const pct = Math.round(v/EQUIPMENT.length*100);
+    const colors = { 'คอมพิวเตอร์':'var(--primary)','โน้ตบุ๊ก':'var(--purple)','เครื่องพิมพ์':'var(--warning)','จอภาพ':'var(--info)' };
+    const col = colors[k]||'var(--secondary)';
+    return `<div style="margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>${k}</span><span>${v} (${pct}%)</span></div>
+      <div class="progress-wrap"><div class="progress-bar" style="width:${pct}%;background:${col}"></div></div>
+    </div>`;
+  }).join('');
+
+  const recentBorrow = BORROWS.slice(-5).reverse().map(b => {
+    const stMap = { pending:'badge-yellow',approved:'badge-blue',borrowing:'badge-purple',returned:'badge-green',rejected:'badge-red' };
+    const stLabel = { pending:'รอดำเนินการ',approved:'อนุมัติ',borrowing:'กำลังยืม',returned:'คืนแล้ว',rejected:'ไม่อนุมัติ' };
+    return `<tr>
+      <td>${b.id}</td><td>${b.requestByName}</td><td>${b.equipmentName}</td>
+      <td><span class="badge ${stMap[b.status]}">${stLabel[b.status]}</span></td>
+      <td>${b.requestDate}</td>
+    </tr>`;
+  }).join('');
+
+  $('#mainContent').html(`
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#dbeafe;color:var(--primary)"><i class="fas fa-desktop"></i></div>
+        <div><div class="stat-value">${EQUIPMENT.length}</div><div class="stat-label">อุปกรณ์ทั้งหมด</div><div class="stat-trend up"><i class="fas fa-check-circle"></i> ใช้งาน ${activeEq} / ชำรุด ${repairEq}</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#ede9fe;color:var(--purple)"><i class="fas fa-compact-disc"></i></div>
+        <div><div class="stat-value">${SOFTWARE.length}</div><div class="stat-label">ซอฟต์แวร์ทั้งหมด</div><div class="stat-trend" style="color:var(--text-muted)"><i class="fas fa-key"></i> License ทั้งหมด ${SOFTWARE.length} รายการ</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#fef3c7;color:var(--warning)"><i class="fas fa-hand-holding"></i></div>
+        <div><div class="stat-value">${borrowing}</div><div class="stat-label">กำลังยืมอยู่</div><div class="stat-trend down"><i class="fas fa-clock"></i> รออนุมัติ ${pendingBorrow} รายการ</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#fee2e2;color:var(--danger)"><i class="fas fa-tools"></i></div>
+        <div><div class="stat-value">${REPAIRS.length}</div><div class="stat-label">การแจ้งซ่อม</div><div class="stat-trend down"><i class="fas fa-wrench"></i> รอดำเนินการ ${pendingRepair} รายการ</div></div>
+      </div>
+    </div>
+    ${alertHtml ? `<div style="margin-bottom:20px">${alertHtml}</div>` : ''}
+    <div class="grid-2" style="margin-bottom:20px">
+      <div class="card">
+        <div class="card-header"><span class="card-title">สัดส่วนอุปกรณ์ตามหมวดหมู่</span></div>
+        <div class="card-body">${catBars||'<p style="color:var(--text-muted)">ไม่มีข้อมูล</p>'}</div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">สถานะอุปกรณ์</span></div>
+        <div class="card-body">
+          ${renderStatusChart()}
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">การยืม-คืนล่าสุด</span><button class="btn btn-sm btn-primary" onclick="navigate('borrows')"><i class="fas fa-arrow-right"></i> ดูทั้งหมด</button></div>
+      <div class="card-body" style="padding:0">
+        <div class="table-wrap"><table>
+          <thead><tr><th>รหัส</th><th>ผู้ขอ</th><th>อุปกรณ์</th><th>สถานะ</th><th>วันที่ขอ</th></tr></thead>
+          <tbody>${recentBorrow||'<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:20px">ไม่มีข้อมูล</td></tr>'}</tbody>
+        </table></div>
+      </div>
+    </div>
+  `);
+}
+
+function renderStatusChart() {
+  const s = { active:0, repair:0, inactive:0, disposed:0 };
+  EQUIPMENT.forEach(e => s[e.status] = (s[e.status]||0)+1);
+  const items = [
+    { label:'ใช้งานได้', val:s.active, color:'var(--secondary)' },
+    { label:'ชำรุด/ซ่อม', val:s.repair, color:'var(--warning)' },
+    { label:'ไม่ใช้งาน', val:s.inactive, color:'var(--text-muted)' },
+    { label:'จำหน่าย', val:s.disposed, color:'var(--danger)' },
+  ];
+  return items.map(i => `
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <div style="width:12px;height:12px;border-radius:3px;background:${i.color};flex-shrink:0"></div>
+      <span style="flex:1;font-size:13px">${i.label}</span>
+      <span style="font-weight:700">${i.val}</span>
+      <div class="progress-wrap" style="width:80px"><div class="progress-bar" style="width:${EQUIPMENT.length?Math.round(i.val/EQUIPMENT.length*100):0}%;background:${i.color}"></div></div>
+    </div>
+  `).join('');
+}
+
+function renderEquipment() {
+  const isAdmin = ['admin','staff'].includes(currentUser.role);
+  const statusMap = { active:'badge-green', repair:'badge-yellow', inactive:'badge-gray', disposed:'badge-red' };
+  const statusLabel = { active:'ใช้งานได้', repair:'ซ่อมบำรุง', inactive:'ไม่ใช้งาน', disposed:'จำหน่าย' };
+  let rows = EQUIPMENT.map(e => `
+    <tr>
+      <td><b>${e.code}</b></td>
+      <td>${e.name}<br><span style="font-size:11px;color:var(--text-muted)">${e.brand} ${e.model}</span></td>
+      <td>${e.category}</td>
+      <td><span class="badge ${statusMap[e.status]||'badge-gray'}">${statusLabel[e.status]||e.status}</span></td>
+      <td>${e.location||'-'}</td>
+      <td>${e.holder||'-'}</td>
+      <td>${e.warrantyEnd||'-'}</td>
+      <td>
+        <button class="btn btn-sm btn-outline" onclick="viewEquipment('${e.id}')"><i class="fas fa-eye"></i></button>
+        ${isAdmin ? `<button class="btn btn-sm btn-primary" onclick="editEquipment('${e.id}')" style="margin-left:4px"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-sm btn-danger" onclick="deleteEquipment('${e.id}')" style="margin-left:4px"><i class="fas fa-trash"></i></button>` : ''}
+      </td>
+    </tr>
+  `).join('');
+
+  $('#mainContent').html(`
+    <div class="card">
+      <div class="card-header">
+        <div class="search-bar"><i class="fas fa-search"></i><input type="text" id="eqSearch" placeholder="ค้นหาอุปกรณ์..." oninput="filterEquipment()"></div>
+        <div style="display:flex;gap:8px">
+          ${isAdmin ? `<button class="btn btn-success" onclick="openAddEquipment()"><i class="fas fa-plus"></i> เพิ่มอุปกรณ์</button>` : ''}
+        </div>
+      </div>
+      <div class="card-body" style="padding:0">
+        <div class="table-wrap"><table id="eqTable">
+          <thead><tr><th>รหัสพัสดุ</th><th>ชื่ออุปกรณ์</th><th>หมวดหมู่</th><th>สถานะ</th><th>สถานที่</th><th>ผู้ถือครอง</th><th>หมดประกัน</th><th>จัดการ</th></tr></thead>
+          <tbody id="eqBody">${rows||'<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--text-muted)">ไม่มีข้อมูล</td></tr>'}</tbody>
+        </table></div>
+      </div>
+    </div>
+  `);
+}
+
+function filterEquipment() {
+  const q = $('#eqSearch').val().toLowerCase();
+  $('#eqBody tr').each(function() {
+    $(this).toggle($(this).text().toLowerCase().includes(q));
+  });
+}
+
+function openAddEquipment() {
+  openModal('เพิ่มอุปกรณ์ใหม่', equipmentForm(), [
+    { label:'บันทึก', class:'btn-primary', action:'saveEquipment(null)' },
+    { label:'ยกเลิก', class:'btn-outline', action:'closeModal()' }
+  ]);
+}
+
+function editEquipment(id) {
+  const eq = EQUIPMENT.find(e=>e.id===id);
+  if(!eq) return;
+  openModal('แก้ไขอุปกรณ์', equipmentForm(eq), [
+    { label:'บันทึก', class:'btn-primary', action:`saveEquipment('${id}')` },
+    { label:'ยกเลิก', class:'btn-outline', action:'closeModal()' }
+  ]);
+}
+
+function viewEquipment(id) {
+  const eq = EQUIPMENT.find(e=>e.id===id);
+  if(!eq) return;
+  const statusLabel = { active:'ใช้งานได้', repair:'ซ่อมบำรุง', inactive:'ไม่ใช้งาน', disposed:'จำหน่าย' };
+  const rows = [
+    ['รหัสพัสดุ',eq.code],['ชื่ออุปกรณ์',eq.name],['หมวดหมู่',eq.category],['ยี่ห้อ/รุ่น',`${eq.brand} ${eq.model}`],
+    ['Serial Number',eq.serial],['สถานะ',statusLabel[eq.status]||eq.status],['สถานที่ตั้ง',eq.location||'-'],
+    ['ผู้ถือครอง',eq.holder||'-'],['วันที่ซื้อ',eq.purchaseDate||'-'],['ราคา',eq.price?Number(eq.price).toLocaleString()+' บาท':'-'],
+    ['วันหมดประกัน',eq.warrantyEnd||'-'],['หมายเหตุ',eq.note||'-']
+  ];
+  const html = `<table style="width:100%">${rows.map(([k,v])=>`<tr><td style="padding:8px 0;color:var(--text-muted);width:140px;font-size:13px">${k}</td><td style="padding:8px 0;font-size:13px;font-weight:500">${v}</td></tr>`).join('')}</table>`;
+  openModal('รายละเอียดอุปกรณ์', html, [{ label:'ปิด', class:'btn-outline', action:'closeModal()' }]);
+}
+
+function equipmentForm(eq={}) {
+  const catOpts = CATEGORIES.map(c=>`<option ${c===eq.category?'selected':''}>${c}</option>`).join('');
+  const locOpts = LOCATIONS.map(l=>`<option ${l===eq.location?'selected':''}>${l}</option>`).join('');
+  return `
+  <div class="form-grid">
+    <div class="form-group"><label class="form-label">รหัสพัสดุ *</label><input class="form-control" id="f_code" value="${eq.code||''}" placeholder="PC-IT-001"></div>
+    <div class="form-group"><label class="form-label">ชื่ออุปกรณ์ *</label><input class="form-control" id="f_name" value="${eq.name||''}" placeholder="คอมพิวเตอร์ตั้งโต๊ะ"></div>
+    <div class="form-group"><label class="form-label">หมวดหมู่</label><select class="form-control" id="f_cat"><option value="">เลือกหมวดหมู่</option>${catOpts}</select></div>
+    <div class="form-group"><label class="form-label">ยี่ห้อ</label><input class="form-control" id="f_brand" value="${eq.brand||''}" placeholder="Dell, HP, Lenovo..."></div>
+    <div class="form-group"><label class="form-label">รุ่น</label><input class="form-control" id="f_model" value="${eq.model||''}" placeholder="OptiPlex 7090"></div>
+    <div class="form-group"><label class="form-label">Serial Number</label><input class="form-control" id="f_serial" value="${eq.serial||''}" placeholder="SN-XXXX"></div>
+    <div class="form-group"><label class="form-label">สถานะ</label><select class="form-control" id="f_status">
+      <option value="active" ${eq.status==='active'?'selected':''}>ใช้งานได้</option>
+      <option value="repair" ${eq.status==='repair'?'selected':''}>ซ่อมบำรุง</option>
+      <option value="inactive" ${eq.status==='inactive'?'selected':''}>ไม่ใช้งาน</option>
+      <option value="disposed" ${eq.status==='disposed'?'selected':''}>จำหน่าย</option>
+    </select></div>
+    <div class="form-group"><label class="form-label">สถานที่ตั้ง</label><select class="form-control" id="f_loc"><option value="">เลือกสถานที่</option>${locOpts}</select></div>
+    <div class="form-group"><label class="form-label">ผู้ถือครอง</label><input class="form-control" id="f_holder" value="${eq.holder||''}" placeholder="พิมพ์ชื่อผู้ถือครอง..."></div>
+    <div class="form-group"><label class="form-label">ราคา (บาท)</label><input class="form-control" id="f_price" type="number" value="${eq.price||''}" placeholder="35000"></div>
+    <div class="form-group"><label class="form-label">วันที่ซื้อ</label><input class="form-control" id="f_pdate" type="date" value="${eq.purchaseDate||''}"></div>
+    <div class="form-group"><label class="form-label">วันหมดประกัน</label><input class="form-control" id="f_warr" type="date" value="${eq.warrantyEnd||''}"></div>
+    <div class="form-group full"><label class="form-label">หมายเหตุ</label><textarea class="form-control" id="f_note">${eq.note||''}</textarea></div>
+  </div>`;
+}
+
+function saveEquipment(id) {
+  const code = $('#f_code').val().trim();
+  const name = $('#f_name').val().trim();
+  if(!code || !name) { Swal.fire({icon:'warning',title:'กรุณากรอกข้อมูลที่จำเป็น',text:'รหัสพัสดุและชื่ออุปกรณ์ต้องไม่ว่าง',confirmButtonColor:'#1a56db'}); return; }
+
+  const obj = {
+    code, name,
+    category: $('#f_cat').val(),
+    brand: $('#f_brand').val(),
+    model: $('#f_model').val(),
+    serial: $('#f_serial').val(),
+    status: $('#f_status').val(),
+    location: $('#f_loc').val(),
+    holder: $('#f_holder').val(),
+    price: $('#f_price').val(),
+    purchaseDate: $('#f_pdate').val(),
+    warrantyEnd: $('#f_warr').val(),
+    note: $('#f_note').val(),
+    savedBy: currentUser.name,
+    savedAt: new Date().toISOString()
+  };
+
+  if(id) {
+    const idx = EQUIPMENT.findIndex(e=>e.id===id);
+    obj.id = id;
+    EQUIPMENT[idx] = obj;
+  } else {
+    obj.id = 'EQ'+(Date.now());
+    EQUIPMENT.push(obj);
+  }
+  saveData('inv_equipment', EQUIPMENT);
+  sendToSheets('equipment', obj);
+  closeModal();
+  renderEquipment();
+}
+
+function deleteEquipment(id) {
+  Swal.fire({ title:'ลบอุปกรณ์นี้?', text:'ข้อมูลจะถูกลบออกจากระบบ', icon:'warning', showCancelButton:true, confirmButtonText:'ลบ', cancelButtonText:'ยกเลิก', confirmButtonColor:'#e02424' })
+    .then(r => {
+      if(r.isConfirmed) {
+        EQUIPMENT = EQUIPMENT.filter(e=>e.id!==id);
+        saveData('inv_equipment',EQUIPMENT);
+        sendToSheetsSilent('deleteEquipment', { id });
+        renderEquipment();
+        Swal.fire({icon:'success',title:'ลบสำเร็จ',showConfirmButton:false,timer:1500});
+      }
+    });
+}
+
+function renderSoftware() {
+  const isAdmin = ['admin','staff'].includes(currentUser.role);
+  const typeLabel = { single:'Single', volume:'Volume', subscription:'Subscription' };
+  let rows = SOFTWARE.map(s => {
+    const exp = s.expireDate ? new Date(s.expireDate) : null;
+    const today = new Date();
+    const near = exp && (exp-today)/(1000*60*60*24) < 90;
+    const expired = exp && exp < today;
+    const expBadge = expired ? '<span class="badge badge-red">หมดอายุ</span>' : near ? '<span class="badge badge-yellow">ใกล้หมด</span>' : '<span class="badge badge-green">ปกติ</span>';
+    return `<tr>
+      <td><b>${s.name}</b></td>
+      <td>${s.version||'-'}</td>
+      <td><span class="badge badge-blue">${typeLabel[s.type]||s.type}</span></td>
+      <td>${s.seats||'-'}</td>
+      <td>${s.usedSeats||0}</td>
+      <td>${s.expireDate||'ถาวร'}</td>
+      <td>${expBadge}</td>
+      <td>
+        ${isAdmin ? `<button class="btn btn-sm btn-primary" onclick="editSoftware('${s.id}')"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-sm btn-danger" onclick="deleteSoftware('${s.id}')" style="margin-left:4px"><i class="fas fa-trash"></i></button>` : ''}
+      </td>
+    </tr>`;
+  }).join('');
+
+  $('#mainContent').html(`
+    <div class="card">
+      <div class="card-header">
+        <div class="search-bar"><i class="fas fa-search"></i><input type="text" id="swSearch" placeholder="ค้นหาซอฟต์แวร์..." oninput="filterTable('swSearch','swBody')"></div>
+        ${isAdmin ? `<button class="btn btn-success" onclick="openAddSoftware()"><i class="fas fa-plus"></i> เพิ่มซอฟต์แวร์</button>` : ''}
+      </div>
+      <div class="card-body" style="padding:0">
+        <div class="table-wrap"><table>
+          <thead><tr><th>ชื่อซอฟต์แวร์</th><th>Version</th><th>ประเภท</th><th>Seats ทั้งหมด</th><th>ใช้งาน</th><th>วันหมดอายุ</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
+          <tbody id="swBody">${rows||'<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--text-muted)">ไม่มีข้อมูล</td></tr>'}</tbody>
+        </table></div>
+      </div>
+    </div>
+  `);
+}
+
+function openAddSoftware() {
+  openModal('เพิ่มซอฟต์แวร์ใหม่', softwareForm(), [
+    { label:'บันทึก', class:'btn-primary', action:'saveSoftware(null)' },
+    { label:'ยกเลิก', class:'btn-outline', action:'closeModal()' }
+  ]);
+}
+
+function editSoftware(id) {
+  const sw = SOFTWARE.find(s=>s.id===id);
+  if(!sw) return;
+  openModal('แก้ไขซอฟต์แวร์', softwareForm(sw), [
+    { label:'บันทึก', class:'btn-primary', action:`saveSoftware('${id}')` },
+    { label:'ยกเลิก', class:'btn-outline', action:'closeModal()' }
+  ]);
+}
+
+function softwareForm(sw={}) {
+  return `
+  <div class="form-grid">
+    <div class="form-group"><label class="form-label">ชื่อซอฟต์แวร์ *</label><input class="form-control" id="sf_name" value="${sw.name||''}" placeholder="Microsoft Office 365"></div>
+    <div class="form-group"><label class="form-label">Version</label><input class="form-control" id="sf_ver" value="${sw.version||''}" placeholder="16.0"></div>
+    <div class="form-group"><label class="form-label">License Key</label><input class="form-control" id="sf_key" value="${sw.licenseKey||''}" placeholder="XXXXX-XXXXX-XXXXX"></div>
+    <div class="form-group"><label class="form-label">ประเภท License</label><select class="form-control" id="sf_type">
+      <option value="single" ${sw.type==='single'?'selected':''}>Single</option>
+      <option value="volume" ${sw.type==='volume'?'selected':''}>Volume</option>
+      <option value="subscription" ${sw.type==='subscription'?'selected':''}>Subscription</option>
+    </select></div>
+    <div class="form-group"><label class="form-label">จำนวน Seats</label><input class="form-control" id="sf_seats" type="number" value="${sw.seats||1}"></div>
+    <div class="form-group"><label class="form-label">ใช้งานแล้ว</label><input class="form-control" id="sf_used" type="number" value="${sw.usedSeats||0}"></div>
+    <div class="form-group"><label class="form-label">Vendor</label><input class="form-control" id="sf_vendor" value="${sw.vendor||''}" placeholder="Microsoft"></div>
+    <div class="form-group"><label class="form-label">ราคา (บาท)</label><input class="form-control" id="sf_price" type="number" value="${sw.price||''}"></div>
+    <div class="form-group"><label class="form-label">วันหมดอายุ</label><input class="form-control" id="sf_exp" type="date" value="${sw.expireDate||''}"></div>
+    <div class="form-group full"><label class="form-label">หมายเหตุ</label><textarea class="form-control" id="sf_note">${sw.note||''}</textarea></div>
+  </div>`;
+}
+
+function saveSoftware(id) {
+  const name = $('#sf_name').val().trim();
+  if(!name) { Swal.fire({icon:'warning',title:'กรุณากรอกชื่อซอฟต์แวร์',confirmButtonColor:'#1a56db'}); return; }
+  const obj = { name, version:$('#sf_ver').val(), licenseKey:$('#sf_key').val(), type:$('#sf_type').val(), seats:$('#sf_seats').val(), usedSeats:$('#sf_used').val(), vendor:$('#sf_vendor').val(), price:$('#sf_price').val(), expireDate:$('#sf_exp').val(), note:$('#sf_note').val(), savedBy:currentUser.name, savedAt:new Date().toISOString() };
+  if(id) { const idx = SOFTWARE.findIndex(s=>s.id===id); obj.id=id; SOFTWARE[idx]=obj; }
+  else { obj.id='SW'+Date.now(); SOFTWARE.push(obj); }
+  saveData('inv_software',SOFTWARE);
+  sendToSheets('software', obj);
+  closeModal(); renderSoftware();
+}
+
+function deleteSoftware(id) {
+  Swal.fire({title:'ลบซอฟต์แวร์นี้?',icon:'warning',showCancelButton:true,confirmButtonText:'ลบ',cancelButtonText:'ยกเลิก',confirmButtonColor:'#e02424'})
+    .then(r => { if(r.isConfirmed) { SOFTWARE=SOFTWARE.filter(s=>s.id!==id); saveData('inv_software',SOFTWARE); renderSoftware(); }});
+}
+
+function renderEmployees() {
+  const isAdmin = ['admin','staff'].includes(currentUser.role);
+  let rows = EMPLOYEES.map(e => `
+    <tr>
+      <td>${e.empCode}</td>
+      <td><b>${e.name}</b></td>
+      <td>${e.dept}</td>
+      <td>${e.position}</td>
+      <td>${e.email||'-'}</td>
+      <td>${e.phone||'-'}</td>
+      <td>${e.userId ? `<span class="badge badge-green"><i class="fas fa-check"></i> มีบัญชี</span>` : `<span class="badge badge-gray">-</span>`}</td>
+      <td>
+        ${isAdmin ? `<button class="btn btn-sm btn-primary" onclick="editEmployee('${e.id}')"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-sm btn-danger" onclick="deleteEmployee('${e.id}')" style="margin-left:4px"><i class="fas fa-trash"></i></button>` : ''}
+      </td>
+    </tr>
+  `).join('');
+
+  $('#mainContent').html(`
+    <div class="card">
+      <div class="card-header">
+        <div class="search-bar"><i class="fas fa-search"></i><input type="text" id="empSearch" placeholder="ค้นหาพนักงาน..." oninput="filterTable('empSearch','empBody')"></div>
+        ${isAdmin ? `<button class="btn btn-success" onclick="openAddEmployee()"><i class="fas fa-user-plus"></i> เพิ่มพนักงาน</button>` : ''}
+      </div>
+      <div class="card-body" style="padding:0">
+        <div class="table-wrap"><table>
+          <thead><tr><th>รหัสพนักงาน</th><th>ชื่อ-นามสกุล</th><th>แผนก</th><th>ตำแหน่ง</th><th>อีเมล</th><th>โทรศัพท์</th><th>บัญชีระบบ</th><th>จัดการ</th></tr></thead>
+          <tbody id="empBody">${rows||'<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--text-muted)">ไม่มีข้อมูล</td></tr>'}</tbody>
+        </table></div>
+      </div>
+    </div>
+  `);
+}
+
+function openAddEmployee() { openModal('เพิ่มพนักงาน', employeeForm(), [{label:'บันทึก',class:'btn-primary',action:'saveEmployee(null)'},{label:'ยกเลิก',class:'btn-outline',action:'closeModal()'}]); }
+function editEmployee(id) {
+  const e = EMPLOYEES.find(x=>x.id===id);
+  if(!e) return;
+  openModal('แก้ไขข้อมูลพนักงาน', employeeForm(e), [{label:'บันทึก',class:'btn-primary',action:`saveEmployee('${id}')`},{label:'ยกเลิก',class:'btn-outline',action:'closeModal()'}]);
+}
+function employeeForm(e={}) {
+  const deptOpts = DEPTS.map(d=>`<option ${d===e.dept?'selected':''}>${d}</option>`).join('');
+  return `<div class="form-grid">
+    <div class="form-group"><label class="form-label">รหัสพนักงาน *</label><input class="form-control" id="ef_code" value="${e.empCode||''}"></div>
+    <div class="form-group"><label class="form-label">ชื่อ-นามสกุล *</label><input class="form-control" id="ef_name" value="${e.name||''}"></div>
+    <div class="form-group"><label class="form-label">แผนก</label><select class="form-control" id="ef_dept"><option>เลือกแผนก</option>${deptOpts}</select></div>
+    <div class="form-group"><label class="form-label">ตำแหน่ง</label><input class="form-control" id="ef_pos" value="${e.position||''}"></div>
+    <div class="form-group"><label class="form-label">อีเมล</label><input class="form-control" id="ef_email" type="email" value="${e.email||''}"></div>
+    <div class="form-group"><label class="form-label">โทรศัพท์</label><input class="form-control" id="ef_phone" value="${e.phone||''}"></div>
+  </div>`;
+}
+function saveEmployee(id) {
+  const code = $('#ef_code').val().trim(), name = $('#ef_name').val().trim();
+  if(!code||!name){Swal.fire({icon:'warning',title:'กรุณากรอกข้อมูลให้ครบ',confirmButtonColor:'#1a56db'});return;}
+  const obj = { empCode:code, name, dept:$('#ef_dept').val(), position:$('#ef_pos').val(), email:$('#ef_email').val(), phone:$('#ef_phone').val(), savedBy:currentUser.name, savedAt:new Date().toISOString() };
+  if(id){const idx=EMPLOYEES.findIndex(e=>e.id===id);obj.id=id;obj.userId=EMPLOYEES[idx].userId;EMPLOYEES[idx]=obj;}
+  else{obj.id='EMP'+Date.now();obj.userId='';EMPLOYEES.push(obj);}
+  saveData('inv_employees',EMPLOYEES);
+  sendToSheets('employee',obj);
+  closeModal();renderEmployees();
+}
+function deleteEmployee(id){
+  Swal.fire({title:'ลบพนักงานนี้?',icon:'warning',showCancelButton:true,confirmButtonText:'ลบ',cancelButtonText:'ยกเลิก',confirmButtonColor:'#e02424'})
+    .then(r=>{if(r.isConfirmed){EMPLOYEES=EMPLOYEES.filter(e=>e.id!==id);saveData('inv_employees',EMPLOYEES);renderEmployees();}});
+}
+
+function renderBorrows() {
+  const isAdmin = ['admin','staff'].includes(currentUser.role);
+  const statusMap = { pending:'badge-yellow',approved:'badge-blue',borrowing:'badge-purple',returned:'badge-green',rejected:'badge-red' };
+  const statusLabel = { pending:'รอดำเนินการ',approved:'อนุมัติแล้ว',borrowing:'กำลังยืม',returned:'คืนแล้ว',rejected:'ไม่อนุมัติ' };
+
+  let borrows = isAdmin ? BORROWS : BORROWS.filter(b=>b.requestBy===currentUser.id);
+
+  let rows = borrows.map(b => `
+    <tr>
+      <td>${b.id}</td>
+      <td>${b.requestByName}</td>
+      <td>${b.equipmentName}</td>
+      <td>${b.requestDate}</td>
+      <td>${b.returnDate||'-'}</td>
+      <td>${b.purpose||'-'}</td>
+      <td><span class="badge ${statusMap[b.status]}">${statusLabel[b.status]||b.status}</span></td>
+      <td>
+        ${isAdmin && b.status==='pending' ? `
+          <button class="btn btn-sm btn-success" onclick="approveBorrow('${b.id}')"><i class="fas fa-check"></i> อนุมัติ</button>
+          <button class="btn btn-sm btn-danger" onclick="rejectBorrow('${b.id}')" style="margin-left:4px"><i class="fas fa-times"></i> ปฏิเสธ</button>
+        ` : ''}
+        ${isAdmin && b.status==='borrowing' ? `<button class="btn btn-sm btn-info" onclick="returnBorrow('${b.id}')"><i class="fas fa-undo"></i> รับคืน</button>` : ''}
+        ${!isAdmin && b.status==='borrowing' ? `<button class="btn btn-sm btn-warning" onclick="requestReturn('${b.id}')"><i class="fas fa-undo"></i> ขอคืน</button>` : ''}
+      </td>
+    </tr>
+  `).join('');
+
+  $('#mainContent').html(`
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-body" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="openAddBorrow()"><i class="fas fa-plus"></i> ส่งคำขอยืม</button>
+        <div style="flex:1;min-width:200px" class="search-bar"><i class="fas fa-search"></i><input type="text" id="brSearch" placeholder="ค้นหา..." oninput="filterTable('brSearch','brBody')"></div>
+        <select class="form-control" style="width:160px" onchange="filterBorrowStatus(this.value)">
+          <option value="">ทุกสถานะ</option>
+          <option value="pending">รอดำเนินการ</option>
+          <option value="borrowing">กำลังยืม</option>
+          <option value="returned">คืนแล้ว</option>
+        </select>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body" style="padding:0">
+        <div class="table-wrap"><table>
+          <thead><tr><th>รหัส</th><th>ผู้ขอยืม</th><th>อุปกรณ์</th><th>วันที่ขอ</th><th>กำหนดคืน</th><th>วัตถุประสงค์</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
+          <tbody id="brBody">${rows||'<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--text-muted)">ไม่มีข้อมูล</td></tr>'}</tbody>
+        </table></div>
+      </div>
+    </div>
+  `);
+}
+
+function openAddBorrow() {
+  const activeEq = EQUIPMENT.filter(e=>e.status==='active');
+  const eqOpts = activeEq.map(e=>`<option value="${e.id}">${e.code} - ${e.name} (${e.brand} ${e.model})</option>`).join('');
+  const html = `<div class="form-grid">
+    <div class="form-group full"><label class="form-label">อุปกรณ์ที่ต้องการยืม *</label><select class="form-control" id="br_eq"><option value="">เลือกอุปกรณ์</option>${eqOpts}</select></div>
+    <div class="form-group"><label class="form-label">วันที่ต้องการ</label><input class="form-control" id="br_date" type="date"></div>
+    <div class="form-group"><label class="form-label">กำหนดคืน</label><input class="form-control" id="br_ret" type="date"></div>
+    <div class="form-group full"><label class="form-label">วัตถุประสงค์ *</label><textarea class="form-control" id="br_purpose" placeholder="ระบุวัตถุประสงค์การยืม"></textarea></div>
+  </div>`;
+  openModal('ส่งคำขอยืมอุปกรณ์', html, [{label:'ส่งคำขอ',class:'btn-primary',action:'saveBorrow()'},{label:'ยกเลิก',class:'btn-outline',action:'closeModal()'}]);
+}
+
+function saveBorrow() {
+  const eqId = $('#br_eq').val(), purpose = $('#br_purpose').val().trim();
+  if(!eqId||!purpose){Swal.fire({icon:'warning',title:'กรุณากรอกข้อมูลให้ครบ',confirmButtonColor:'#1a56db'});return;}
+  const eq = EQUIPMENT.find(e=>e.id===eqId);
+  const obj = { id:'BR'+Date.now(), equipmentId:eqId, equipmentName:`${eq.name} ${eq.brand} ${eq.model}`, requestBy:currentUser.id, requestByName:currentUser.name, requestDate:new Date().toISOString().slice(0,10), borrowDate:'', returnDate:$('#br_ret').val(), purpose, status:'pending', approvedBy:'', note:'' };
+  BORROWS.push(obj); saveData('inv_borrows',BORROWS);
+  sendToSheets('borrow',obj);
+  closeModal(); renderBorrows();
+  Swal.fire({icon:'success',title:'ส่งคำขอสำเร็จ',text:'รอเจ้าหน้าที่อนุมัติ',showConfirmButton:false,timer:2000});
+}
+
+function approveBorrow(id) {
+  const idx = BORROWS.findIndex(b=>b.id===id);
+  BORROWS[idx].status = 'borrowing';
+  BORROWS[idx].borrowDate = new Date().toISOString().slice(0,10);
+  BORROWS[idx].approvedBy = currentUser.name;
+  saveData('inv_borrows',BORROWS);
+  sendToSheetsSilent('borrow', BORROWS[idx]);
+  buildNav(); renderBorrows();
+  Swal.fire({icon:'success',title:'อนุมัติสำเร็จ',showConfirmButton:false,timer:1500});
+}
+
+function rejectBorrow(id) {
+  const idx = BORROWS.findIndex(b=>b.id===id);
+  BORROWS[idx].status = 'rejected';
+  saveData('inv_borrows',BORROWS);
+  sendToSheetsSilent('borrow', BORROWS[idx]);
+  buildNav(); renderBorrows();
+}
+
+function returnBorrow(id) {
+  const idx = BORROWS.findIndex(b=>b.id===id);
+  BORROWS[idx].status = 'returned';
+  BORROWS[idx].returnDate = new Date().toISOString().slice(0,10);
+  saveData('inv_borrows',BORROWS);
+  sendToSheetsSilent('borrow', BORROWS[idx]);
+  renderBorrows();
+  Swal.fire({icon:'success',title:'รับคืนเรียบร้อย',showConfirmButton:false,timer:1500});
+}
+
+function requestReturn(id){
+  Swal.fire({title:'ขอคืนอุปกรณ์?',text:'ระบบจะแจ้งเจ้าหน้าที่รับคืน',icon:'question',showCancelButton:true,confirmButtonText:'ยืนยัน',cancelButtonText:'ยกเลิก',confirmButtonColor:'#1a56db'})
+    .then(r=>{if(r.isConfirmed){returnBorrow(id);}});
+}
+
+function filterBorrowStatus(v) {
+  if(!v){$('#brBody tr').show();return;}
+  $('#brBody tr').each(function(){$(this).toggle($(this).find('td:nth-child(7)').text().trim().toLowerCase().includes(v==='pending'?'รอดำเนินการ':v==='borrowing'?'กำลังยืม':'คืนแล้ว'));});
+}
+
+function renderRepairs() {
+  const isAdmin = ['admin','staff'].includes(currentUser.role);
+  const statusMap = { pending:'badge-yellow',repairing:'badge-blue',done:'badge-green',cancelled:'badge-gray' };
+  const statusLabel = { pending:'รอดำเนินการ',repairing:'กำลังซ่อม',done:'ซ่อมเสร็จ',cancelled:'ยกเลิก' };
+  let repairs = isAdmin ? REPAIRS : REPAIRS.filter(r=>r.reportBy===currentUser.id);
+
+  let rows = repairs.map(r => `
+    <tr>
+      <td>${r.id}</td>
+      <td>${r.reportByName}</td>
+      <td>${r.equipmentName}</td>
+      <td>${r.reportDate}</td>
+      <td style="max-width:180px">${r.problem}</td>
+      <td>${r.technician||'-'}</td>
+      <td><span class="badge ${statusMap[r.status]}">${statusLabel[r.status]||r.status}</span></td>
+      <td>
+        <button class="btn btn-sm btn-outline" onclick="viewRepair('${r.id}')"><i class="fas fa-eye"></i></button>
+        ${isAdmin && (r.status==='pending'||r.status==='repairing') ? `<button class="btn btn-sm btn-primary" onclick="updateRepair('${r.id}')" style="margin-left:4px"><i class="fas fa-edit"></i></button>` : ''}
+      </td>
+    </tr>
+  `).join('');
+
+  $('#mainContent').html(`
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-body" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <button class="btn btn-danger" onclick="openAddRepair()"><i class="fas fa-exclamation-circle"></i> แจ้งซ่อม</button>
+        <div style="flex:1;min-width:200px" class="search-bar"><i class="fas fa-search"></i><input type="text" id="rpSearch" placeholder="ค้นหา..." oninput="filterTable('rpSearch','rpBody')"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body" style="padding:0">
+        <div class="table-wrap"><table>
+          <thead><tr><th>รหัส</th><th>ผู้แจ้ง</th><th>อุปกรณ์</th><th>วันที่แจ้ง</th><th>ปัญหา</th><th>ช่าง</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
+          <tbody id="rpBody">${rows||'<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--text-muted)">ไม่มีข้อมูล</td></tr>'}</tbody>
+        </table></div>
+      </div>
+    </div>
+  `);
+}
+
+function openAddRepair() {
+  const eqOpts = EQUIPMENT.filter(e=>e.status!=='disposed').map(e=>`<option value="${e.id}">${e.code} - ${e.name}</option>`).join('');
+  const html = `<div class="form-grid">
+    <div class="form-group full"><label class="form-label">อุปกรณ์ที่ชำรุด *</label><select class="form-control" id="rp_eq"><option value="">เลือกอุปกรณ์</option>${eqOpts}</select></div>
+    <div class="form-group full"><label class="form-label">รายละเอียดปัญหา *</label><textarea class="form-control" id="rp_prob" rows="3" placeholder="อธิบายปัญหาที่พบ..."></textarea></div>
+    <div class="form-group full"><label class="form-label">หมายเหตุเพิ่มเติม</label><textarea class="form-control" id="rp_note" rows="2"></textarea></div>
+  </div>`;
+  openModal('แจ้งซ่อมอุปกรณ์', html, [{label:'แจ้งซ่อม',class:'btn-danger',action:'saveRepair()'},{label:'ยกเลิก',class:'btn-outline',action:'closeModal()'}]);
+}
+
+function saveRepair() {
+  const eqId = $('#rp_eq').val(), prob = $('#rp_prob').val().trim();
+  if(!eqId||!prob){Swal.fire({icon:'warning',title:'กรุณากรอกข้อมูลให้ครบ',confirmButtonColor:'#1a56db'});return;}
+  const eq = EQUIPMENT.find(e=>e.id===eqId);
+  const obj = { id:'RP'+Date.now(), equipmentId:eqId, equipmentName:eq.name+' '+eq.brand+' '+eq.model, reportBy:currentUser.id, reportByName:currentUser.name, reportDate:new Date().toISOString().slice(0,10), problem:prob, status:'pending', technician:'', cost:0, warranty:false, log:[{date:new Date().toISOString().slice(0,10),action:'รับแจ้งปัญหา',by:currentUser.name}], note:$('#rp_note').val() };
+  REPAIRS.push(obj); saveData('inv_repairs',REPAIRS);
+  sendToSheets('repair',obj);
+  closeModal(); renderRepairs();
+  Swal.fire({icon:'success',title:'แจ้งซ่อมสำเร็จ',text:'เจ้าหน้าที่จะดำเนินการโดยเร็ว',showConfirmButton:false,timer:2000});
+}
+
+function viewRepair(id) {
+  const r = REPAIRS.find(x=>x.id===id);
+  if(!r) return;
+  const statusLabel = { pending:'รอดำเนินการ',repairing:'กำลังซ่อม',done:'ซ่อมเสร็จ',cancelled:'ยกเลิก' };
+  const logs = (r.log||[]).map(l=>`<div class="timeline-item"><div class="timeline-dot" style="background:var(--primary)"></div><div class="timeline-content"><div class="timeline-title">${l.action}</div><div class="timeline-time">${l.date} — ${l.by}</div></div></div>`).join('');
+  const html = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+      <div><b>อุปกรณ์:</b><br>${r.equipmentName}</div>
+      <div><b>ผู้แจ้ง:</b><br>${r.reportByName}</div>
+      <div><b>สถานะ:</b><br>${statusLabel[r.status]||r.status}</div>
+      <div><b>ช่าง:</b><br>${r.technician||'-'}</div>
+      <div style="grid-column:1/-1"><b>ปัญหา:</b><br><div style="background:var(--bg);padding:10px;border-radius:8px;margin-top:4px">${r.problem}</div></div>
+    </div>
+    <b>Timeline การดำเนินงาน</b>
+    <div class="timeline" style="margin-top:12px">${logs||'<p style="color:var(--text-muted)">ยังไม่มีข้อมูล</p>'}</div>
+  `;
+  openModal('รายละเอียดการซ่อม '+r.id, html, [{label:'ปิด',class:'btn-outline',action:'closeModal()'}]);
+}
+
+function updateRepair(id) {
+  const r = REPAIRS.find(x=>x.id===id);
+  const html = `<div class="form-grid">
+    <div class="form-group"><label class="form-label">สถานะ</label><select class="form-control" id="upd_st">
+      <option value="pending" ${r.status==='pending'?'selected':''}>รอดำเนินการ</option>
+      <option value="repairing" ${r.status==='repairing'?'selected':''}>กำลังซ่อม</option>
+      <option value="done" ${r.status==='done'?'selected':''}>ซ่อมเสร็จ</option>
+      <option value="cancelled" ${r.status==='cancelled'?'selected':''}>ยกเลิก</option>
+    </select></div>
+    <div class="form-group"><label class="form-label">ช่างผู้รับผิดชอบ</label><input class="form-control" id="upd_tech" value="${r.technician||''}"></div>
+    <div class="form-group"><label class="form-label">ค่าใช้จ่าย (บาท)</label><input class="form-control" id="upd_cost" type="number" value="${r.cost||0}"></div>
+    <div class="form-group full"><label class="form-label">บันทึกการดำเนินงาน</label><input class="form-control" id="upd_log" placeholder="เพิ่ม log..."></div>
+  </div>`;
+  openModal('อัปเดตการซ่อม', html, [{label:'บันทึก',class:'btn-primary',action:`saveRepairUpdate('${id}')`},{label:'ยกเลิก',class:'btn-outline',action:'closeModal()'}]);
+}
+
+function saveRepairUpdate(id) {
+  const idx = REPAIRS.findIndex(r=>r.id===id);
+  REPAIRS[idx].status = $('#upd_st').val();
+  REPAIRS[idx].technician = $('#upd_tech').val();
+  REPAIRS[idx].cost = $('#upd_cost').val();
+  const logTxt = $('#upd_log').val().trim();
+  if(logTxt) REPAIRS[idx].log.push({date:new Date().toISOString().slice(0,10),action:logTxt,by:currentUser.name});
+  saveData('inv_repairs',REPAIRS);
+  sendToSheetsSilent('repair', REPAIRS[idx]);
+  closeModal(); renderRepairs();
+  Swal.fire({icon:'success',title:'อัปเดตสำเร็จ',showConfirmButton:false,timer:1500});
+}
+
+function renderUsers() {
+  reloadUsers();
+  const roleBadge = {admin:'badge-red',staff:'badge-yellow',user:'badge-green'};
+  const roleLabel = {admin:'🔴 Admin',staff:'🟡 Staff',user:'🟢 User'};
+  const rows = USERS.map(u => {
+    const avatarEl = u.profileImg
+      ? `<img src="${u.profileImg}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;border:2px solid var(--border)">`
+      : `<div class="user-avatar ${u.avatar}" style="width:28px;height:28px;font-size:11px">${u.name.charAt(0)}</div>`;
+    return `
+    <tr>
+      <td><div style="display:flex;align-items:center;gap:8px">
+        ${avatarEl}
+        <b>${u.name}</b></div></td>
+      <td>${u.username}</td>
+      <td><span class="badge ${roleBadge[u.role]}">${roleLabel[u.role]}</span></td>
+      <td>${u.dept||'-'}</td>
+      <td>
+        <button class="btn btn-sm btn-primary" onclick="editUser('${u.id}')"><i class="fas fa-edit"></i></button>
+        ${u.id!=='U001'?`<button class="btn btn-sm btn-danger" onclick="deleteUser('${u.id}')" style="margin-left:4px"><i class="fas fa-trash"></i></button>`:''}
+      </td>
+    </tr>`}).join('');
+
+  $('#mainContent').html(`
+    <div class="card">
+      <div class="card-header"><span class="card-title">จัดการบัญชีผู้ใช้</span>
+        <button class="btn btn-primary" onclick="openAddUser()"><i class="fas fa-user-plus"></i> เพิ่มผู้ใช้</button>
+      </div>
+      <div class="card-body" style="padding:0">
+        <div class="table-wrap"><table>
+          <thead><tr><th>ชื่อ</th><th>Username</th><th>Role</th><th>แผนก</th><th>จัดการ</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table></div>
+      </div>
+    </div>
+  `);
+}
+
+function userForm(u={}) {
+  const deptOpts = DEPTS.map(d=>`<option ${d===(u.dept||'')? 'selected':''}>${d}</option>`).join('');
+  const avatarPreview = u.profileImg
+    ? `<img src="${u.profileImg}" id="profilePreview" style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid var(--primary)">`
+    : `<div id="profilePreview" class="user-avatar ${u.avatar||'av-blue'}" style="width:72px;height:72px;font-size:28px;cursor:pointer">${(u.name||'U').charAt(0)}</div>`;
+  return `<div class="form-grid">
+    <div class="form-group full" style="align-items:center;flex-direction:row;gap:20px;padding-bottom:12px;border-bottom:1px solid var(--border);margin-bottom:4px">
+      <div style="position:relative;cursor:pointer" onclick="$('#uf_img_input').click()">
+        ${avatarPreview}
+        <div style="position:absolute;bottom:0;right:0;width:22px;height:22px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #fff">
+          <i class="fas fa-camera" style="color:#fff;font-size:10px"></i>
+        </div>
+      </div>
+      <div>
+        <div style="font-weight:600;font-size:13px">รูปโปรไฟล์</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px">คลิกที่รูปเพื่อเปลี่ยน (JPG/PNG ไม่เกิน 2MB)</div>
+        <input type="file" id="uf_img_input" accept="image/*" style="display:none" onchange="handleProfileImg(this)">
+        ${u.profileImg ? `<button type="button" class="btn btn-sm btn-outline" onclick="clearProfileImg()" style="font-size:11px"><i class="fas fa-times"></i> ลบรูป</button>` : ''}
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">ชื่อ-นามสกุล *</label><input class="form-control" id="uf_name" value="${u.name||''}"></div>
+    <div class="form-group"><label class="form-label">Username *</label><input class="form-control" id="uf_user" value="${u.username||''}"></div>
+    <div class="form-group"><label class="form-label">รหัสผ่าน ${u.id?'(เว้นว่างถ้าไม่เปลี่ยน)':' *'}</label><input class="form-control" id="uf_pass" type="password" placeholder="${u.id?'••••••••':'กรอกรหัสผ่าน'}"></div>
+    <div class="form-group"><label class="form-label">สิทธิ์ *</label><select class="form-control" id="uf_role">
+      <option value="admin" ${u.role==='admin'?'selected':''}>🔴 Admin (ดูแลระบบ)</option>
+      <option value="staff" ${u.role==='staff'?'selected':''}>🟡 Staff (เจ้าหน้าที่)</option>
+      <option value="user" ${u.role==='user'?'selected':''}>🟢 User (ผู้ใช้ทั่วไป)</option>
+    </select></div>
+    <div class="form-group"><label class="form-label">แผนก</label><select class="form-control" id="uf_dept"><option value="">-</option>${deptOpts}</select></div>
+    <div class="form-group"><label class="form-label">สีโปรไฟล์ (ถ้าไม่มีรูป)</label><select class="form-control" id="uf_av">
+      <option value="av-blue" ${u.avatar==='av-blue'?'selected':''}>🔵 น้ำเงิน</option>
+      <option value="av-green" ${u.avatar==='av-green'?'selected':''}>🟢 เขียว</option>
+      <option value="av-purple" ${u.avatar==='av-purple'?'selected':''}>🟣 ม่วง</option>
+      <option value="av-red" ${u.avatar==='av-red'?'selected':''}>🔴 แดง</option>
+      <option value="av-orange" ${u.avatar==='av-orange'?'selected':''}>🟠 ส้ม</option>
+    </select></div>
+    <input type="hidden" id="uf_profile_img" value="${u.profileImg||''}">
+  </div>`;
+}
+
+function handleProfileImg(input) {
+  const file = input.files[0];
+  if(!file) return;
+  if(file.size > 2*1024*1024) { Swal.fire({icon:'warning',title:'ไฟล์ใหญ่เกินไป',text:'กรุณาเลือกรูปที่มีขนาดไม่เกิน 2MB',confirmButtonColor:'#1a56db'}); return; }
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const b64 = e.target.result;
+    $('#uf_profile_img').val(b64);
+    $('#profilePreview').replaceWith(`<img id="profilePreview" src="${b64}" style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid var(--primary);cursor:pointer" onclick="$('#uf_img_input').click()">`);
+  };
+  reader.readAsDataURL(file);
+}
+function clearProfileImg() {
+  $('#uf_profile_img').val('');
+  $('#profilePreview').replaceWith(`<div id="profilePreview" class="user-avatar av-blue" style="width:72px;height:72px;font-size:28px;cursor:pointer" onclick="$('#uf_img_input').click()">U</div>`);
+}
+
+function openAddUser() {
+  openModal('เพิ่มผู้ใช้ใหม่', userForm(), [
+    {label:'บันทึก', class:'btn-primary', action:'saveUser(null)'},
+    {label:'ยกเลิก', class:'btn-outline', action:'closeModal()'}
+  ]);
+}
+
+function editUser(id) {
+  const u = USERS.find(x=>x.id===id); if(!u) return;
+  openModal('แก้ไขผู้ใช้', userForm(u), [
+    {label:'บันทึก', class:'btn-primary', action:`saveUser('${id}')`},
+    {label:'ยกเลิก', class:'btn-outline', action:'closeModal()'}
+  ]);
+}
+
+function saveUser(id) {
+  const name     = $('#uf_name').val().trim();
+  const username = $('#uf_user').val().trim();
+  const pass     = $('#uf_pass').val().trim();
+  const role     = $('#uf_role').val();
+  const dept     = $('#uf_dept').val();
+  const avatar   = $('#uf_av').val();
+  const profileImg = $('#uf_profile_img').val();
+
+  if(!name || !username) { Swal.fire({icon:'warning',title:'กรุณากรอกชื่อและ Username',confirmButtonColor:'var(--primary)'}); return; }
+  if(!id && !pass) { Swal.fire({icon:'warning',title:'กรุณากรอกรหัสผ่าน',confirmButtonColor:'var(--primary)'}); return; }
+  if(id && pass && pass.length < 4) { Swal.fire({icon:'warning',title:'รหัสผ่านสั้นเกินไป',text:'รหัสผ่านต้องมีอย่างน้อย 4 ตัวอักษร',confirmButtonColor:'var(--primary)'}); return; }
+
+  USERS = loadData('inv_users', DEFAULT_USERS);
+
+  const dup = USERS.find(u => u.username===username && u.id!==id);
+  if(dup) { Swal.fire({icon:'warning',title:'Username นี้มีในระบบแล้ว',confirmButtonColor:'var(--primary)'}); return; }
+
+  if(id) {
+    const idx = USERS.findIndex(u=>u.id===id);
+    if(idx === -1) { Swal.fire({icon:'error',title:'ไม่พบผู้ใช้',confirmButtonColor:'var(--primary)'}); return; }
+
+    USERS[idx].name     = name;
+    USERS[idx].username = username;
+    USERS[idx].role     = role;
+    USERS[idx].dept     = dept;
+    USERS[idx].avatar   = avatar;
+    if(profileImg !== '') USERS[idx].profileImg = profileImg;
+
+    if(pass) {
+      USERS[idx].password = pass;
+
+      if(currentUser && currentUser.id === id) {
+        currentUser.password = pass;
+      }
+    }
+    if(currentUser && currentUser.id === id) {
+      currentUser.name = name; currentUser.username = username;
+      currentUser.role = role; currentUser.dept = dept; currentUser.avatar = avatar;
+      if(profileImg !== '') currentUser.profileImg = profileImg;
+      updateSidebarUser();
+    }
+  } else {
+    USERS.push({ id:'U'+Date.now(), username, password:pass, name, role, dept, avatar, profileImg:profileImg||'' });
+  }
+
+  saveData('inv_users', USERS);
+
+  closeModal();
+  renderUsers();
+  Swal.fire({icon:'success', title:'บันทึกสำเร็จ', text: pass ? 'บันทึกข้อมูลและรหัสผ่านแล้ว' : 'บันทึกข้อมูลแล้ว', showConfirmButton:false, timer:1800});
+
+  const userForSheets = id ? USERS.find(u=>u.id===id) : USERS[USERS.length-1];
+  if (userForSheets && userForSheets.password) {
+    sendToSheetsSilent('user', {
+      id:         userForSheets.id,
+      username:   userForSheets.username,
+      name:       userForSheets.name,
+      role:       userForSheets.role,
+      dept:       userForSheets.dept || '',
+      avatar:     userForSheets.avatar || 'av-blue',
+      password:   userForSheets.password,  // ส่ง password เสมอเพื่อให้เครื่องอื่น login ได้
+    });
+  }
+}
+
+function deleteUser(id) {
+  if(id==='U001') { Swal.fire({icon:'warning',title:'ไม่สามารถลบ Admin หลักได้'}); return; }
+  Swal.fire({title:'ลบผู้ใช้นี้?',icon:'warning',showCancelButton:true,confirmButtonText:'ลบ',cancelButtonText:'ยกเลิก',confirmButtonColor:'#e02424'})
+    .then(r=>{if(r.isConfirmed){
+      reloadUsers();
+      const deletedUser = USERS.find(u=>u.id===id);
+      USERS = USERS.filter(u=>u.id!==id);
+      saveData('inv_users',USERS);
+
+      if (deletedUser) {
+        sendToSheetsSilent('deleteUser', { id: deletedUser.id, username: deletedUser.username });
+      }
+      renderUsers();
+    }});
+}
+
+function openMyProfile() {
+  const u = currentUser;
+  const preview = u.profileImg
+    ? `<img src="${u.profileImg}" id="mp_preview" style="width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid var(--primary);cursor:pointer" onclick="$('#mp_img_input').click()">`
+    : `<div id="mp_preview" class="user-avatar ${u.avatar||'av-blue'}" style="width:90px;height:90px;font-size:36px;cursor:pointer" onclick="$('#mp_img_input').click()">${u.name.charAt(0)}</div>`;
+
+  const deptOpts = DEPTS.map(d=>`<option ${d===(u.dept||'')?'selected':''}>${d}</option>`).join('');
+
+  const html = `
+    <div style="text-align:center;margin-bottom:24px">
+      <div style="position:relative;display:inline-block">
+        ${preview}
+        <div onclick="$('#mp_img_input').click()" style="position:absolute;bottom:2px;right:2px;width:26px;height:26px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #fff;cursor:pointer">
+          <i class="fas fa-camera" style="color:#fff;font-size:11px"></i>
+        </div>
+      </div>
+      <input type="file" id="mp_img_input" accept="image/*" style="display:none" onchange="handleMyProfileImg(this)">
+      <div style="margin-top:10px">
+        ${u.profileImg ? `<button type="button" class="btn btn-sm btn-outline" onclick="clearMyProfileImg()"><i class="fas fa-times"></i> ลบรูป</button>` : ''}
+      </div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:6px">คลิกที่รูปเพื่อเปลี่ยน (JPG/PNG ไม่เกิน 2MB)</div>
+    </div>
+    <div class="form-grid">
+      <div class="form-group"><label class="form-label">ชื่อ-นามสกุล *</label><input class="form-control" id="mp_name" value="${u.name||''}"></div>
+      <div class="form-group"><label class="form-label">Username</label><input class="form-control" id="mp_user" value="${u.username||''}" readonly style="background:#f8fafc;color:var(--text-muted)"></div>
+      <div class="form-group"><label class="form-label">รหัสผ่านใหม่ <span style="font-weight:400;color:var(--text-muted)">(เว้นว่างถ้าไม่เปลี่ยน)</span></label><input class="form-control" id="mp_pass" type="password" placeholder="กรอกรหัสผ่านใหม่"></div>
+      <div class="form-group"><label class="form-label">ยืนยันรหัสผ่านใหม่</label><input class="form-control" id="mp_pass2" type="password" placeholder="กรอกอีกครั้ง"></div>
+      <div class="form-group"><label class="form-label">แผนก</label><select class="form-control" id="mp_dept"><option value="">-</option>${deptOpts}</select></div>
+      <div class="form-group"><label class="form-label">สีโปรไฟล์ (ถ้าไม่มีรูป)</label><select class="form-control" id="mp_av">
+        <option value="av-blue"   ${u.avatar==='av-blue'?'selected':''}>🔵 น้ำเงิน</option>
+        <option value="av-green"  ${u.avatar==='av-green'?'selected':''}>🟢 เขียว</option>
+        <option value="av-purple" ${u.avatar==='av-purple'?'selected':''}>🟣 ม่วง</option>
+        <option value="av-red"    ${u.avatar==='av-red'?'selected':''}>🔴 แดง</option>
+        <option value="av-orange" ${u.avatar==='av-orange'?'selected':''}>🟠 ส้ม</option>
+      </select></div>
+    </div>
+    <input type="hidden" id="mp_profile_img" value="${u.profileImg||''}">
+  `;
+  openModal('แก้ไขโปรไฟล์ของฉัน', html, [
+    {label:'บันทึก', class:'btn-primary', action:'saveMyProfile()'},
+    {label:'ยกเลิก', class:'btn-outline', action:'closeModal()'},
+  ]);
+}
+
+function handleMyProfileImg(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 2*1024*1024) { Swal.fire({icon:'warning',title:'ไฟล์ใหญ่เกินไป',text:'กรุณาเลือกรูปที่มีขนาดไม่เกิน 2MB',confirmButtonColor:'#1a56db'}); return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    const b64 = e.target.result;
+    $('#mp_profile_img').val(b64);
+    $('#mp_preview').replaceWith(`<img id="mp_preview" src="${b64}" style="width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid var(--primary);cursor:pointer" onclick="$('#mp_img_input').click()">`);
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearMyProfileImg() {
+  $('#mp_profile_img').val('');
+  $('#mp_preview').replaceWith(`<div id="mp_preview" class="user-avatar av-blue" style="width:90px;height:90px;font-size:36px;cursor:pointer" onclick="$('#mp_img_input').click()">${currentUser.name.charAt(0)}</div>`);
+}
+
+function saveMyProfile() {
+  const name       = $('#mp_name').val().trim();
+  const pass       = $('#mp_pass').val().trim();
+  const pass2      = $('#mp_pass2').val().trim();
+  const dept       = $('#mp_dept').val();
+  const avatar     = $('#mp_av').val();
+  const profileImg = $('#mp_profile_img').val();
+
+  if (!name) { Swal.fire({icon:'warning',title:'กรุณากรอกชื่อ',confirmButtonColor:'#1a56db'}); return; }
+  if (pass && pass !== pass2) { Swal.fire({icon:'warning',title:'รหัสผ่านไม่ตรงกัน',text:'กรุณากรอกรหัสผ่านให้ตรงกันทั้งสองช่อง',confirmButtonColor:'#1a56db'}); return; }
+
+  reloadUsers();
+  const idx = USERS.findIndex(u => u.id === currentUser.id);
+  if (idx === -1) return;
+
+  USERS[idx].name   = name;
+  USERS[idx].dept   = dept;
+  USERS[idx].avatar = avatar;
+  if (profileImg !== '') USERS[idx].profileImg = profileImg;
+  if (pass) USERS[idx].password = pass;
+
+  currentUser.name   = name;
+  currentUser.dept   = dept;
+  currentUser.avatar = avatar;
+  if (profileImg !== '') currentUser.profileImg = profileImg;
+  if (pass) currentUser.password = pass;
+
+  saveData('inv_users', USERS);
+  updateSidebarUser();
+  closeModal();
+  Swal.fire({icon:'success', title:'บันทึกโปรไฟล์สำเร็จ', showConfirmButton:false, timer:1500});
+}
+
+function renderMasterData() {
+  const catRows = CATEGORIES.map((c,i)=>`<tr><td>${i+1}</td><td>${c}</td><td><button class="btn btn-sm btn-danger" onclick="deleteMaster('categories',${i})"><i class="fas fa-trash"></i></button></td></tr>`).join('');
+  const locRows = LOCATIONS.map((l,i)=>`<tr><td>${i+1}</td><td>${l}</td><td><button class="btn btn-sm btn-danger" onclick="deleteMaster('locations',${i})"><i class="fas fa-trash"></i></button></td></tr>`).join('');
+  const deptRows = DEPTS.map((d,i)=>`<tr><td>${i+1}</td><td>${d}</td><td><button class="btn btn-sm btn-danger" onclick="deleteMaster('depts',${i})"><i class="fas fa-trash"></i></button></td></tr>`).join('');
+
+  $('#mainContent').html(`
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-header"><span class="card-title"><i class="fas fa-tag"></i> หมวดหมู่อุปกรณ์</span></div>
+        <div class="card-body" style="padding:0">
+          <div class="table-wrap"><table><thead><tr><th>#</th><th>ชื่อหมวดหมู่</th><th></th></tr></thead><tbody>${catRows}</tbody></table></div>
+          <div style="padding:12px;border-top:1px solid var(--border);display:flex;gap:8px">
+            <input class="form-control" id="newCat" placeholder="หมวดหมู่ใหม่">
+            <button class="btn btn-primary" onclick="addMaster('categories','newCat')"><i class="fas fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title"><i class="fas fa-map-marker-alt"></i> สถานที่</span></div>
+        <div class="card-body" style="padding:0">
+          <div class="table-wrap"><table><thead><tr><th>#</th><th>สถานที่</th><th></th></tr></thead><tbody>${locRows}</tbody></table></div>
+          <div style="padding:12px;border-top:1px solid var(--border);display:flex;gap:8px">
+            <input class="form-control" id="newLoc" placeholder="สถานที่ใหม่">
+            <button class="btn btn-primary" onclick="addMaster('locations','newLoc')"><i class="fas fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title"><i class="fas fa-building"></i> แผนก</span></div>
+        <div class="card-body" style="padding:0">
+          <div class="table-wrap"><table><thead><tr><th>#</th><th>แผนก</th><th></th></tr></thead><tbody>${deptRows}</tbody></table></div>
+          <div style="padding:12px;border-top:1px solid var(--border);display:flex;gap:8px">
+            <input class="form-control" id="newDept" placeholder="แผนกใหม่">
+            <button class="btn btn-primary" onclick="addMaster('depts','newDept')"><i class="fas fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `);
+}
+
+function addMaster(type, inputId) {
+  const val = $(`#${inputId}`).val().trim();
+  if(!val) return;
+  const stores = { categories: [CATEGORIES,'inv_categories'], locations: [LOCATIONS,'inv_locations'], depts: [DEPTS,'inv_depts'] };
+  const [arr, key] = stores[type];
+  if(arr.includes(val)){Swal.fire({icon:'warning',title:'มีข้อมูลนี้แล้ว',confirmButtonColor:'#1a56db'});return;}
+  arr.push(val); saveData(key, arr); renderMasterData();
+}
+
+function deleteMaster(type, idx) {
+  const stores = { categories: [CATEGORIES,'inv_categories'], locations: [LOCATIONS,'inv_locations'], depts: [DEPTS,'inv_depts'] };
+  const [arr, key] = stores[type];
+  arr.splice(idx, 1); saveData(key, arr); renderMasterData();
+}
+
+function renderReports() {
+  $('#mainContent').html(`
+    <div class="grid-2" style="margin-bottom:20px">
+      <div class="card">
+        <div class="card-header"><span class="card-title">รายงานอุปกรณ์คอมพิวเตอร์</span></div>
+        <div class="card-body">
+          <p style="color:var(--text-muted);font-size:13px;margin-bottom:16px">สรุปรายการอุปกรณ์ทั้งหมด พร้อมสถานะและตำแหน่ง</p>
+          <button class="btn btn-primary" onclick="exportReport('equipment')"><i class="fas fa-file-excel"></i> Export Excel</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">รายงานซอฟต์แวร์</span></div>
+        <div class="card-body">
+          <p style="color:var(--text-muted);font-size:13px;margin-bottom:16px">สรุป License ทั้งหมด พร้อมวันหมดอายุ</p>
+          <button class="btn btn-primary" onclick="exportReport('software')"><i class="fas fa-file-excel"></i> Export Excel</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">รายงานการยืม-คืน</span></div>
+        <div class="card-body">
+          <p style="color:var(--text-muted);font-size:13px;margin-bottom:16px">ประวัติการยืม-คืนอุปกรณ์ทั้งหมด</p>
+          <button class="btn btn-primary" onclick="exportReport('borrows')"><i class="fas fa-file-excel"></i> Export Excel</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">รายงานการแจ้งซ่อม</span></div>
+        <div class="card-body">
+          <p style="color:var(--text-muted);font-size:13px;margin-bottom:16px">สรุปประวัติการซ่อมบำรุงทั้งหมด</p>
+          <button class="btn btn-primary" onclick="exportReport('repairs')"><i class="fas fa-file-excel"></i> Export Excel</button>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">ตัวอย่างข้อมูล</span></div>
+      <div class="card-body">
+        <div class="stats-grid" style="grid-template-columns:repeat(4,1fr)">
+          <div style="text-align:center;padding:16px;background:var(--bg);border-radius:8px"><div style="font-size:28px;font-weight:800;color:var(--primary)">${EQUIPMENT.length}</div><div style="font-size:12px;color:var(--text-muted)">อุปกรณ์ทั้งหมด</div></div>
+          <div style="text-align:center;padding:16px;background:var(--bg);border-radius:8px"><div style="font-size:28px;font-weight:800;color:var(--purple)">${SOFTWARE.length}</div><div style="font-size:12px;color:var(--text-muted)">ซอฟต์แวร์</div></div>
+          <div style="text-align:center;padding:16px;background:var(--bg);border-radius:8px"><div style="font-size:28px;font-weight:800;color:var(--warning)">${BORROWS.length}</div><div style="font-size:12px;color:var(--text-muted)">รายการยืม</div></div>
+          <div style="text-align:center;padding:16px;background:var(--bg);border-radius:8px"><div style="font-size:28px;font-weight:800;color:var(--danger)">${REPAIRS.length}</div><div style="font-size:12px;color:var(--text-muted)">รายการซ่อม</div></div>
+        </div>
+      </div>
+    </div>
+  `);
+}
+
+function exportReport(type) {
+  let data, headers, filename;
+  if(type==='equipment'){
+    headers=['รหัสพัสดุ','ชื่ออุปกรณ์','หมวดหมู่','ยี่ห้อ','รุ่น','Serial','สถานะ','สถานที่','ผู้ถือครอง','วันหมดประกัน','ราคา'];
+    data=EQUIPMENT.map(e=>[e.code,e.name,e.category,e.brand,e.model,e.serial,e.status,e.location,e.holder,e.warrantyEnd,e.price]);
+    filename='equipment_report';
+  } else if(type==='software'){
+    headers=['ชื่อซอฟต์แวร์','Version','ประเภท','License Key','Seats','ใช้งาน','วันหมดอายุ','Vendor','ราคา'];
+    data=SOFTWARE.map(s=>[s.name,s.version,s.type,s.licenseKey,s.seats,s.usedSeats,s.expireDate,s.vendor,s.price]);
+    filename='software_report';
+  } else if(type==='borrows'){
+    headers=['รหัส','ผู้ยืม','อุปกรณ์','วันที่ขอ','กำหนดคืน','วัตถุประสงค์','สถานะ','ผู้อนุมัติ'];
+    data=BORROWS.map(b=>[b.id,b.requestByName,b.equipmentName,b.requestDate,b.returnDate,b.purpose,b.status,b.approvedBy]);
+    filename='borrow_report';
+  } else {
+    headers=['รหัส','ผู้แจ้ง','อุปกรณ์','วันที่แจ้ง','ปัญหา','ช่าง','สถานะ','ค่าใช้จ่าย'];
+    data=REPAIRS.map(r=>[r.id,r.reportByName,r.equipmentName,r.reportDate,r.problem,r.technician,r.status,r.cost]);
+    filename='repair_report';
+  }
+  let csv = [headers].concat(data).map(r=>r.map(v=>'"'+(v||'').toString().replace(/"/g,'""')+'"').join(',')).join('\n');
+  const bom = '\uFEFF';
+  const blob = new Blob([bom+csv],{type:'text/csv;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download=filename+'_'+new Date().toISOString().slice(0,10)+'.csv'; a.click();
+  URL.revokeObjectURL(url);
+  Swal.fire({icon:'success',title:'Export สำเร็จ',showConfirmButton:false,timer:1500});
+}
+
+function renderSettings() {
+  $('#mainContent').html(`
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header"><span class="card-title"><i class="fas fa-building"></i> ข้อมูลองค์กร</span></div>
+        <div class="card-body">
+          <div class="form-group" style="margin-bottom:12px"><label class="form-label">ชื่อองค์กร</label><input class="form-control" value="บริษัท ตัวอย่าง จำกัด"></div>
+          <div class="form-group" style="margin-bottom:12px"><label class="form-label">Apps Script URL</label><input class="form-control" id="cfg_url" value="${API_URL}" placeholder="https://script.google.com/macros/s/..."></div>
+          <div class="form-group" style="margin-bottom:12px"><label class="form-label">อีเมลผู้ดูแลระบบ</label><input class="form-control" value="it@company.com" type="email"></div>
+          <button class="btn btn-primary" onclick="saveSettings()"><i class="fas fa-save"></i> บันทึก</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title"><i class="fas fa-bell"></i> การแจ้งเตือน</span></div>
+        <div class="card-body">
+          <div class="config-item">
+            <div><div class="config-label">แจ้งเตือนประกันใกล้หมด</div><div class="config-desc">แจ้งเตือนล่วงหน้า 90 วัน</div></div>
+            <div class="toggle on" onclick="$(this).toggleClass('on')"></div>
+          </div>
+          <div class="config-item">
+            <div><div class="config-label">แจ้งเตือน License ใกล้หมด</div><div class="config-desc">แจ้งเตือนล่วงหน้า 30 วัน</div></div>
+            <div class="toggle on" onclick="$(this).toggleClass('on')"></div>
+          </div>
+          <div class="config-item">
+            <div><div class="config-label">ส่งข้อมูลไป Google Sheets</div><div class="config-desc">บันทึกทุกรายการลง Sheets อัตโนมัติ</div></div>
+            <div class="toggle on" onclick="$(this).toggleClass('on')"></div>
+          </div>
+          <div class="config-item">
+            <div><div class="config-label">Session Timeout</div><div class="config-desc">ออกจากระบบอัตโนมัติหลัง 30 นาที</div></div>
+            <div class="toggle" onclick="$(this).toggleClass('on')"></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title"><i class="fas fa-database"></i> ข้อมูลในระบบ</span></div>
+        <div class="card-body">
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between"><span>อุปกรณ์</span><b>${EQUIPMENT.length} รายการ</b></div>
+            <div style="display:flex;justify-content:space-between"><span>ซอฟต์แวร์</span><b>${SOFTWARE.length} รายการ</b></div>
+            <div style="display:flex;justify-content:space-between"><span>พนักงาน</span><b>${EMPLOYEES.length} คน</b></div>
+            <div style="display:flex;justify-content:space-between"><span>รายการยืม</span><b>${BORROWS.length} รายการ</b></div>
+            <div style="display:flex;justify-content:space-between"><span>รายการซ่อม</span><b>${REPAIRS.length} รายการ</b></div>
+          </div>
+          <hr style="margin:16px 0;border:none;border-top:1px solid var(--border)">
+          <button class="btn btn-danger btn-sm" onclick="clearAllData()"><i class="fas fa-trash"></i> ล้างข้อมูลทั้งหมด</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title"><i class="fas fa-sync-alt"></i> ซิงก์ข้อมูลข้ามเครื่อง</span></div>
+        <div class="card-body">
+          <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px">
+            ใช้สำหรับย้ายข้อมูลไปเครื่องอื่น หรือแชร์ข้อมูลให้ผู้ใช้คนอื่น<br>
+            <b>ขั้นตอน:</b> เครื่องหลัก Export → ส่งไฟล์ → เครื่องอื่น Import
+          </p>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="background:var(--bg);border-radius:10px;padding:16px">
+              <div style="font-weight:600;font-size:13px;margin-bottom:4px"><i class="fas fa-file-export" style="color:var(--secondary)"></i> Export ข้อมูล</div>
+              <div style="font-size:12px;color:var(--text-muted);margin-bottom:10px">บันทึกข้อมูลทั้งหมดเป็นไฟล์ .json เพื่อนำไปใช้กับเครื่องอื่น</div>
+              <button class="btn btn-success btn-sm" onclick="exportAllData()"><i class="fas fa-download"></i> Export ข้อมูลทั้งหมด</button>
+            </div>
+            <div style="background:var(--bg);border-radius:10px;padding:16px">
+              <div style="font-weight:600;font-size:13px;margin-bottom:4px"><i class="fas fa-file-import" style="color:var(--primary)"></i> Import ข้อมูล</div>
+              <div style="font-size:12px;color:var(--text-muted);margin-bottom:10px">นำเข้าข้อมูลจากไฟล์ .json ที่ Export มาจากเครื่องอื่น <span style="color:var(--danger);font-weight:600">(ข้อมูลเดิมจะถูกแทนที่)</span></div>
+              <input type="file" id="importFile" accept=".json" style="display:none" onchange="importAllData(this)">
+              <button class="btn btn-primary btn-sm" onclick="$('#importFile').click()"><i class="fas fa-upload"></i> Import ข้อมูล</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `);
+}
+
+function saveSettings(){Swal.fire({icon:'success',title:'บันทึกการตั้งค่าสำเร็จ',showConfirmButton:false,timer:1500});}
+
+function exportAllData() {
+  const data = {
+    exportedAt: new Date().toISOString(),
+    exportedBy: currentUser.name,
+    version: '1.0',
+    equipment:  loadData('inv_equipment',  []),
+    software:   loadData('inv_software',   []),
+    borrows:    loadData('inv_borrows',    []),
+    repairs:    loadData('inv_repairs',    []),
+    employees:  loadData('inv_employees',  []),
+    categories: loadData('inv_categories', []),
+    locations:  loadData('inv_locations',  []),
+    depts:      loadData('inv_depts',      []),
+    users:      loadData('inv_users',      []).map(u => ({ ...u, password: '***' })), // ซ่อน password
+  };
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], { type: 'application/json;charset=utf-8' });
+  const url  = URL.createObjectURL(blob);
+  const date = new Date().toISOString().slice(0, 10);
+  const a    = Object.assign(document.createElement('a'), { href: url, download: `inventory_backup_${date}.json` });
+  a.click();
+  URL.revokeObjectURL(url);
+  Swal.fire({ icon:'success', title:'Export สำเร็จ', text:'ส่งไฟล์ inventory_backup_' + date + '.json ให้เครื่องอื่น แล้วกด Import', confirmButtonColor:'var(--primary)' });
+}
+
+function importAllData(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+
+      if (!data.version || !data.exportedAt) {
+        Swal.fire({ icon:'error', title:'ไฟล์ไม่ถูกต้อง', text:'กรุณาเลือกไฟล์ที่ Export จากระบบนี้เท่านั้น', confirmButtonColor:'var(--primary)' });
+        return;
+      }
+
+      const date = new Date(data.exportedAt).toLocaleString('th-TH');
+      Swal.fire({
+        icon: 'warning',
+        title: 'ยืนยันการ Import?',
+        html: `ข้อมูลเดิมในเครื่องนี้จะถูก<b>แทนที่ทั้งหมด</b><br>
+               <span style="font-size:12px;color:var(--text-muted)">Export จากเครื่อง: ${data.exportedBy || 'ไม่ระบุ'}<br>วันที่: ${date}</span>`,
+        showCancelButton: true,
+        confirmButtonText: 'Import เลย',
+        cancelButtonText: 'ยกเลิก',
+        confirmButtonColor: '#e02424',
+      }).then(r => {
+        if (!r.isConfirmed) return;
+
+        if (data.equipment)  saveData('inv_equipment',  data.equipment);
+        if (data.software)   saveData('inv_software',   data.software);
+        if (data.borrows)    saveData('inv_borrows',    data.borrows);
+        if (data.repairs)    saveData('inv_repairs',    data.repairs);
+        if (data.employees)  saveData('inv_employees',  data.employees);
+        if (data.categories) saveData('inv_categories', data.categories);
+        if (data.locations)  saveData('inv_locations',  data.locations);
+        if (data.depts)      saveData('inv_depts',      data.depts);
+
+        if (data.users) {
+          const existingUsers = loadData('inv_users', []);
+          const mergedUsers = data.users.map(importedU => {
+            const existing = existingUsers.find(u => u.id === importedU.id);
+            return { ...importedU, password: existing ? existing.password : 'changeme123', profileImg: importedU.profileImg || '' };
+          });
+          saveData('inv_users', mergedUsers);
+        }
+
+        Swal.fire({ icon:'success', title:'Import สำเร็จ!', text:'โหลดข้อมูลใหม่ทันที...', showConfirmButton:false, timer:1500 })
+          .then(() => location.reload());
+      });
+    } catch(err) {
+      Swal.fire({ icon:'error', title:'ไฟล์เสียหาย', text:'ไม่สามารถอ่านไฟล์ได้ กรุณาตรวจสอบไฟล์อีกครั้ง', confirmButtonColor:'var(--primary)' });
+    }
+  };
+  reader.readAsText(file, 'UTF-8');
+  input.value = ''; // reset เผื่อ import ไฟล์เดิมซ้ำ
+}
+
+function clearAllData(){
+  Swal.fire({title:'ล้างข้อมูลทั้งหมด?',text:'ข้อมูลทั้งหมดในระบบจะถูกลบ',icon:'warning',showCancelButton:true,confirmButtonText:'ล้างข้อมูล',cancelButtonText:'ยกเลิก',confirmButtonColor:'#e02424'})
+    .then(r=>{if(r.isConfirmed){['inv_equipment','inv_software','inv_borrows','inv_repairs','inv_employees','inv_categories','inv_locations','inv_depts'].forEach(k=>localStorage.removeItem(k));location.reload();}});
+}
+
+function renderMyEquip() {
+  const myEq = EQUIPMENT.filter(e=>e.holder===currentUser.name);
+  const myBorrow = BORROWS.filter(b=>b.requestBy===currentUser.id && b.status==='borrowing');
+  const statusMap = { active:'badge-green',repair:'badge-yellow',inactive:'badge-gray',disposed:'badge-red' };
+  const statusLabel = { active:'ใช้งานได้',repair:'ซ่อมบำรุง',inactive:'ไม่ใช้งาน',disposed:'จำหน่าย' };
+
+  const eqRows = myEq.map(e=>`<tr><td>${e.code}</td><td>${e.name}<br><small style="color:var(--text-muted)">${e.brand} ${e.model}</small></td><td>${e.category}</td><td><span class="badge ${statusMap[e.status]}">${statusLabel[e.status]}</span></td></tr>`).join('');
+  const brRows = myBorrow.map(b=>`<tr><td>${b.id}</td><td>${b.equipmentName}</td><td>${b.borrowDate||'-'}</td><td>${b.returnDate||'-'}</td><td><button class="btn btn-sm btn-warning" onclick="requestReturn('${b.id}')"><i class="fas fa-undo"></i> คืน</button></td></tr>`).join('');
+
+  $('#mainContent').html(`
+    <div class="card" style="margin-bottom:20px">
+      <div class="card-header"><span class="card-title"><i class="fas fa-laptop"></i> อุปกรณ์ที่ครอบครอง</span></div>
+      <div class="card-body" style="padding:0">
+        <div class="table-wrap"><table>
+          <thead><tr><th>รหัสพัสดุ</th><th>ชื่ออุปกรณ์</th><th>หมวดหมู่</th><th>สถานะ</th></tr></thead>
+          <tbody>${eqRows||'<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--text-muted)">ไม่มีอุปกรณ์ที่ครอบครอง</td></tr>'}</tbody>
+        </table></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title"><i class="fas fa-hand-holding"></i> อุปกรณ์ที่กำลังยืม</span></div>
+      <div class="card-body" style="padding:0">
+        <div class="table-wrap"><table>
+          <thead><tr><th>รหัสยืม</th><th>อุปกรณ์</th><th>วันที่ยืม</th><th>กำหนดคืน</th><th>จัดการ</th></tr></thead>
+          <tbody>${brRows||'<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text-muted)">ไม่มีอุปกรณ์ที่ยืมอยู่</td></tr>'}</tbody>
+        </table></div>
+      </div>
+    </div>
+  `);
+}
+
+function filterTable(searchId, bodyId) {
+  const q = $(`#${searchId}`).val().toLowerCase();
+  $(`#${bodyId} tr`).each(function(){ $(this).toggle($(this).text().toLowerCase().includes(q)); });
+}
+
+function openModal(title, body, buttons=[]) {
+  $('#modalTitle').text(title);
+  $('#modalBody').html(body);
+  const btns = buttons.map(b=>`<button class="btn ${b.class}" onclick="${b.action}">${b.label}</button>`).join('');
+  $('#modalFooter').html(btns);
+  $('#modalOverlay').addClass('open');
+}
+function closeModal() { $('#modalOverlay').removeClass('open'); }
+function closeModalOnOverlay(e) { if(e.target === document.getElementById('modalOverlay')) closeModal(); }
+
+function sendToSheets(type, data) {
+  if(!API_URL || API_URL === 'xxx') { console.log('[Demo] API_URL not set. Data:', type, data); return; }
+  showLoading('กำลังบันทึกข้อมูลไป Google Sheets...');
+  const payload = { type, data, timestamp: new Date().toISOString(), sentBy: currentUser ? currentUser.name : 'system' };
+  fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify(payload)
+  })
+  .then(r => r.text())
+  .then(res => {
+    hideLoading();
+    Swal.fire({ icon:'success', title:'บันทึกสำเร็จ', text:'ข้อมูลถูกส่งไปยัง Google Sheets แล้ว', showConfirmButton:false, timer:2000, toast:true, position:'top-end' });
+  })
+  .catch(err => {
+    hideLoading();
+    console.error('API Error:', err);
+    Swal.fire({ icon:'warning', title:'บันทึกในเครื่องสำเร็จ', text:'ไม่สามารถส่งข้อมูลไป Google Sheets ได้ (ตรวจสอบ API URL)', confirmButtonColor:'#1a56db' });
+  });
+}
+
+function sendToSheetsSilent(type, data) {
+  if(!API_URL || API_URL === 'xxx') return;
+  const payload = { type, data, timestamp: new Date().toISOString(), sentBy: currentUser ? currentUser.name : 'system' };
+  fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify(payload)
+  })
+  .then(r => r.text())
+  .then(() => {
+    Swal.fire({ icon:'success', title:'ซิงก์ข้อมูลสำเร็จ', text:'ข้อมูลผู้ใช้ถูกส่งไปยัง Google Sheets แล้ว', showConfirmButton:false, timer:1500, toast:true, position:'top-end' });
+  })
+  .catch(err => console.warn('sendToSheetsSilent error:', err));
+}
+
+
+// ── Event Listeners สำหรับ Apps Script CSP ──
+document.addEventListener('DOMContentLoaded', function() {
+  // ปุ่ม Login
+  var btnLogin = document.getElementById('btnLogin');
+  if (btnLogin) btnLogin.addEventListener('click', doLogin);
+
+  // Enter ใน password field
+  var passInput = document.getElementById('loginPassInput') || document.getElementById('loginPass');
+  if (passInput) passInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doLogin();
+  });
+});
+
+// ผูก event หลัง login สำเร็จ
+function bindPostLoginEvents() {
+  var btnLogout = document.getElementById('btnLogout');
+  if (btnLogout) btnLogout.addEventListener('click', function(e) {
+    e.stopPropagation();
+    doLogout();
+  });
+
+  var btnSync = document.getElementById('btnSync');
+  if (btnSync) btnSync.addEventListener('click', manualSync);
+
+  var userCard = document.getElementById('sidebarUserCard');
+  if (userCard) userCard.addEventListener('click', openMyProfile);
+}
+
+function showLoading(msg='กำลังดำเนินการ...') { $('#loadingText').text(msg); $('#loadingOverlay').addClass('show'); }
+function hideLoading() { $('#loadingOverlay').removeClass('show'); }
+</script>
+</body>
+</html>
